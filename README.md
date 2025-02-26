@@ -37,7 +37,7 @@ The BookStore assignment is a code challenge for job applicants where you will c
 - **Estimated Time:** Spend no more than 3–4 hours. We don’t want you to invest too much time.
 - **Focus Areas:** We recommend primarily focusing on User Stories #1, #4, and #5, as well as testing the application.
 - **Stories & Acceptance Criteria:** All user stories and requirements are outlined in the project’s `README.md`.
-- **Submission:** Please return the project as a ZIP file without node_modules. Alternatively, feel free to set up a private repository and share access with us instead.
+- **Submission:** Please fork the assignment and send a mail return with a link to your repository solution.
 - **Confirmation:** Please confirm receipt of this assignment so we know you’re ready to begin.
 
 ---
@@ -48,10 +48,9 @@ The BookStore assignment is a code challenge for job applicants where you will c
 - Make the UI **user-friendly** with tooltips, error messages, and clear visual indicators.
 - Use openapis generated models and services **openapi/generated**, and ng-apimock for mocking the backend.
 - Provide **tests** for your solution so we can see your approach to quality assurance.
-- Follow **best practices** for Angular, TypeScript, and the instructions in the project’s README.md (structured code, reusable components, etc.).
+- Follow **[CONTRIBUTING.md](CONTRIBUTING.md)** for architecture, documentation, and other guidelines (structured code, reusable components, etc.).
 - The project should run **locally**—include a brief description in your own README if anything special is required.
 - We will review your solution during the interview, giving you a chance to explain your decisions and discuss any enhancements you would make with more time.
-- Read [CONTRIBUTING.md](CONTRIBUTING.md) file for architecture, documentation, and other guidelines.
 
 ---
 
