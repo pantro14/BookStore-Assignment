@@ -1,13 +1,13 @@
-import { AppComponent } from '@app/app.component';
+import { OverviewComponent } from '@app/overview/overview.component';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
-import { TranslateService } from '@ngx-translate/core';
+import { BookstoreBffService } from '@openapi';
 
-describe('AppComponent', () => {
-  let spectator: Spectator<AppComponent>;
+describe('OverviewComponent', () => {
+  let spectator: Spectator<OverviewComponent>;
   const createComponent = createComponentFactory({
-    component: AppComponent,
+    component: OverviewComponent,
     imports: [],
-    mocks: [TranslateService],
+    mocks: [BookstoreBffService],
   });
 
   beforeEach(() => {
