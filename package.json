@@ -24,7 +24,8 @@
     "prettier:fix": "prettier --write \"**/*.{js,css,scss,less,md,ts,html,component.html}\"",
     "watch": "ng build --watch --configuration development",
     "openapi": "rm -rf generated/ && openapi-generator-cli generate",
-    "postinstall": "npm run openapi"
+    "postinstall": "npm run openapi",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -62,6 +63,7 @@
     "@ng-apimock/dev-interface": "^3.5.1",
     "@ngneat/spectator": "^19.4.1",
     "@openapitools/openapi-generator-cli": "^2.16.3",
+    "@playwright/test": "1.55.1",
     "@schuchard/prettier": "^5.1.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
@@ -85,6 +87,7 @@
     "lint-staged": "^15.4.3",
     "material-icons": "^1.13.14",
     "npm-run-all": "^4.1.5",
+    "playwright-ng-schematics": "^2.0.3",
     "postcss": "^8.5.3",
     "prettier": "^3.5.1",
     "prettier-package-json": "^2.8.0",

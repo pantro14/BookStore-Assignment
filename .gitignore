@@ -50,3 +50,8 @@ Thumbs.db
 
 .npmrc
 openapi/generated
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

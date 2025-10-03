@@ -99,6 +99,17 @@
           "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "book-store:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "book-store:serve:production"
+            }
+          }
         }
       }
     }
