@@ -22,7 +22,7 @@ module.exports = {
     },
   },
   coverageReporters: ['text', 'text-summary', 'json', ['lcov', { projectRoot: '/' }]],
-  testPathIgnorePatterns: [],
+  testPathIgnorePatterns: ['/e2e/'],
   collectCoverageFrom: [
     'src/**/*.ts',
     '!src/**/*.routes.ts',

@@ -1,4 +1,9 @@
 import { Routes } from '@angular/router';
-import { OverviewComponent } from '@app/overview/overview.component';
 
-export const routes: Routes = [{ path: '', component: OverviewComponent }];
+export const routes: Routes = [
+  {
+    path: 'books',
+    loadComponent: () => import('@app/books/book-list/book-list.component').then(m => m.BookListComponent),
+  },
+  { path: '**', redirectTo: 'books' },
+];
