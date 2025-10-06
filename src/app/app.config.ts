@@ -12,7 +12,7 @@ import {
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { environment } from '@env/environment';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -49,7 +49,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(withEventReplay()),
   ],
 };
