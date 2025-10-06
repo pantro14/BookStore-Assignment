@@ -89,12 +89,7 @@
           "builder": "@angular-builders/jest:run",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "src/assets/"
-              }
-            ],
+            "assets": ["src/assets/"],
             "styles": ["src/styles.scss"],
             "scripts": []
           }
@@ -103,6 +98,17 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+          }
+        },
+        "e2e": {
+          "builder": "playwright-ng-schematics:playwright",
+          "options": {
+            "devServerTarget": "book-store:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "book-store:serve:production"
+            }
           }
         }
       }
