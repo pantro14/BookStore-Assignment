@@ -1,0 +1,12 @@
+<h1>Books</h1>
+<button (click)="createBook()">New Book</button>
+@let books = books$ | async;
+<table>
+  <tr *ngFor="let book of books">
+    <td>{{ book.title }}</td>
+    <td>{{ book.price }}</td>
+    <td><button (click)="editBook(book.id)">Edit</button></td>
+  </tr>
+</table>
+
+<router-outlet></router-outlet>
