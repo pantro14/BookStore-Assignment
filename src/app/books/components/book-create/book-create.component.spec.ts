@@ -1,23 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
+import { BookstoreBffService } from '@openapi';
 
 import { BookCreateComponent } from './book-create.component';
 
-describe('BookCreateComponent', () => {
-  let component: BookCreateComponent;
-  let fixture: ComponentFixture<BookCreateComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [BookCreateComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(BookCreateComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+describe('OverviewComponent', () => {
+  let spectator: Spectator<BookCreateComponent>;
+  const createComponent = createComponentFactory({
+    component: BookCreateComponent,
+    imports: [],
+    mocks: [BookstoreBffService],
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  beforeEach(() => {
+    spectator = createComponent();
+  });
+
+  it('should create the app', () => {
+    expect(spectator.component).toBeTruthy();
   });
 });

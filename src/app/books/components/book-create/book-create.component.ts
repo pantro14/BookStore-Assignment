@@ -1,30 +1,42 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { BookstoreBffService } from '@openapi';
 
-import { BookFormComponent } from '../book-form/book-form.component';
+import { BookDialogComponent } from '../book-dialog/book-dialog.component';
 
 @Component({
   selector: 'mxs-book-create',
-  templateUrl: './book-create.component.html',
-  styleUrl: './book-create.component.scss',
+  imports: [BookDialogComponent],
+  template: `
+    <mxs-book-dialog
+      [initialData]="initialData"
+      (dialogSubmit)="onSubmit($event)"
+      (dialogClose)="onClose()"
+    ></mxs-book-dialog>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookCreateComponent implements AfterViewInit {
+export class BookCreateComponent {
   protected readonly router = inject(Router);
-  readonly dialog = inject(MatDialog);
+  protected readonly bookstoreBffService = inject(BookstoreBffService);
 
-  ngAfterViewInit(): void {
-    this.openDialog();
+  protected readonly initialData = {
+    title: '',
+    price: 0,
+    pageCount: 0,
+    onSale: false,
+  };
+
+  onSubmit(data: any): void {
+    this.bookstoreBffService.createBook({ bookCreateDTO: data }).subscribe({
+      next: () => this.onClose(),
+      error: err => {
+        console.error('Error creating book:', err);
+      },
+    });
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(BookFormComponent, {
-      width: '450px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.router.navigate(['/books']);
-    });
+  onClose(): void {
+    this.router.navigate(['/books']);
   }
 }

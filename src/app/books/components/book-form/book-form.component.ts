@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -10,8 +10,10 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { BookDialogData, BookFormData, BookFormType } from '@app/books/interfaces';
 
 @Component({
   selector: 'mxs-book-form',
@@ -22,17 +24,21 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class BookFormComponent {
   @Input() initialData: { title?: string; author?: string } | null = null;
-  @Output() submitForm = new EventEmitter<{ title: string; author: string }>();
-  @Output() cancelForm = new EventEmitter<void>();
+  readonly data = inject<BookDialogData>(MAT_DIALOG_DATA);
+  private formBuilder = inject(FormBuilder);
 
-  readonly bookForm: FormGroup;
+  readonly bookForm: FormGroup<BookFormType>;
 
-  constructor(private fb: FormBuilder) {
-    this.bookForm = this.fb.group({
-      title: ['', [Validators.required, this.titleValidator]],
-      price: ['', [Validators.required, Validators.min(0.01)]],
-      pageCount: ['', [Validators.required, Validators.min(1), Validators.pattern('^[0-9]+$')]],
-      onSale: [false],
+  constructor() {
+    this.bookForm = this.formBuilder.group<BookFormType>({
+      title: this.formBuilder.control<string | null>('', [Validators.required, this.titleValidator]),
+      price: this.formBuilder.control<number | null>(null, [Validators.required, Validators.min(0.01)]),
+      pageCount: this.formBuilder.control<number | null>(null, [
+        Validators.required,
+        Validators.min(1),
+        Validators.pattern('^[0-9]+$'),
+      ]),
+      onSale: this.formBuilder.control<boolean | null>(false),
     });
   }
 
@@ -53,5 +59,17 @@ export class BookFormComponent {
   }
   get pageCount() {
     return this.bookForm.get('pageCount');
+  }
+
+  onSubmit() {
+    if (this.bookForm.valid) {
+      this.data.onSubmit(this.bookForm.value as BookFormData);
+    } else {
+      this.bookForm.markAllAsTouched();
+    }
+  }
+
+  onCancel() {
+    this.data.onClose();
   }
 }
