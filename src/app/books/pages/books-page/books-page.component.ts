@@ -1,6 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, DestroyRef, inject, Input, ViewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, effect, inject, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,7 +9,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterModule } from '@angular/router';
-import { BookDTO, BookstoreBffService } from '@openapi';
+import { BookStore } from '@app/books/stores/book-store';
+import { BookDTO } from '@openapi';
 
 @Component({
   selector: 'mxs-books-page',
@@ -31,29 +31,28 @@ import { BookDTO, BookstoreBffService } from '@openapi';
   styleUrl: './books-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BooksPageComponent implements AfterViewInit {
-  protected readonly bookstoreBffService = inject(BookstoreBffService);
+export class BooksPageComponent {
   protected readonly router = inject(Router);
-  private destroyRef = inject(DestroyRef);
+  protected readonly bookStore = inject(BookStore);
+
+  protected paginator = viewChild(MatPaginator);
+  protected sort = viewChild(MatSort);
 
   protected dataSource: MatTableDataSource<BookDTO> = new MatTableDataSource<BookDTO>([]);
 
-  @Input() bookId = '';
+  readonly displayedColumns = signal<string[]>(['title', 'price', 'onSale', 'edit', 'delete']);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-  readonly displayedColumns: string[] = ['title', 'price', 'onSale', 'edit', 'delete'];
-
-  ngAfterViewInit() {
-    this.bookstoreBffService
-      .getBooks({ onSale: false })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(books => {
-        this.dataSource = new MatTableDataSource<BookDTO>(books);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      });
+  constructor() {
+    this.bookStore.loadBooks();
+    effect(() => {
+      const paginator = this.paginator();
+      const sort = this.sort();
+      if (paginator && sort) {
+        this.dataSource = new MatTableDataSource<BookDTO>(this.bookStore.entities());
+        this.dataSource.paginator = paginator;
+        this.dataSource.sort = sort;
+      }
+    });
   }
 
   createBook() {
