@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { BookstoreBffService } from '@openapi';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { BookFormData } from '@app/books/interfaces';
+import { BookStore } from '@app/books/stores/book-store';
 
 import { BookDialogComponent } from '../book-dialog/book-dialog.component';
 
@@ -9,7 +9,7 @@ import { BookDialogComponent } from '../book-dialog/book-dialog.component';
   imports: [BookDialogComponent],
   template: `
     <mxs-book-dialog
-      [initialData]="initialData"
+      [initialData]="initialData()"
       (dialogSubmit)="onSubmit($event)"
       (dialogClose)="onClose()"
     ></mxs-book-dialog>
@@ -17,26 +17,20 @@ import { BookDialogComponent } from '../book-dialog/book-dialog.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookCreateComponent {
-  protected readonly router = inject(Router);
-  protected readonly bookstoreBffService = inject(BookstoreBffService);
+  protected readonly bookStore = inject(BookStore);
 
-  protected readonly initialData = {
+  protected readonly initialData = signal({
     title: '',
     price: 0,
     pageCount: 0,
     onSale: false,
-  };
+  });
 
-  onSubmit(data: any): void {
-    this.bookstoreBffService.createBook({ bookCreateDTO: data }).subscribe({
-      next: () => this.onClose(),
-      error: err => {
-        console.error('Error creating book:', err);
-      },
-    });
+  onSubmit(newBook: BookFormData): void {
+    this.bookStore.addBook(newBook);
   }
 
   onClose(): void {
-    this.router.navigate(['/books']);
+    this.bookStore.nagivageToBookList();
   }
 }
