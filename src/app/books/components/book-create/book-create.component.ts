@@ -26,11 +26,11 @@ export class BookCreateComponent {
     onSale: false,
   });
 
-  onSubmit(newBook: BookFormData): void {
+  protected onSubmit(newBook: BookFormData): void {
     this.bookStore.addBook(newBook);
   }
 
-  onClose(): void {
+  protected onClose(): void {
     this.bookStore.nagivageToBookList();
   }
 }

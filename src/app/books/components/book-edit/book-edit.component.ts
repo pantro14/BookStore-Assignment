@@ -17,13 +17,12 @@ import { BookDialogComponent } from '../book-dialog/book-dialog.component';
       ></mxs-book-dialog>
     }
   `,
-  styleUrl: './book-edit.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookEditComponent {
   protected readonly bookStore = inject(BookStore);
   readonly bookId = input.required<number>();
-  protected bookData = this.bookStore.selectedBook;
+  protected readonly bookData = this.bookStore.selectedBook;
 
   constructor() {
     effect(() => {

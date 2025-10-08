@@ -2,7 +2,7 @@ import { computed, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { addEntities, EntityId, prependEntity, withEntities } from '@ngrx/signals/entities';
+import { addEntities, EntityId, prependEntity, updateEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { BookCreateDTO, BookDTO, BookstoreBffService, BookUpdateDTO } from '@openapi';
 import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
@@ -88,7 +88,7 @@ export const BookStore = signalStore(
             const bookUpdateDTO = { ...bookFormData, lastUpdated: new Date().getTime() } as BookUpdateDTO;
             return bookstoreBffService.updateBook({ bookId, bookUpdateDTO }).pipe(
               tap(book => {
-                patchState(store, addEntities([book]));
+                patchState(store, updateEntity({ id: bookId, changes: { ...bookFormData } }));
                 snackBar.open(`Book "${book.title}" edited successfully!`, 'Close', {
                   duration: 3000,
                   verticalPosition: 'top',
