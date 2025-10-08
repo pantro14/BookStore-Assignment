@@ -3,7 +3,7 @@ import { BookstoreBffService } from '@openapi';
 
 import { BookCreateComponent } from './book-create.component';
 
-describe('OverviewComponent', () => {
+describe('BookCreateComponent', () => {
   let spectator: Spectator<BookCreateComponent>;
   const createComponent = createComponentFactory({
     component: BookCreateComponent,

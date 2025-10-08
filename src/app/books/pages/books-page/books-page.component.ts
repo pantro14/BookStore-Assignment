@@ -64,6 +64,6 @@ export class BooksPageComponent {
   }
 
   deleteBook(bookId: string) {
-    //to implement
+    this.router.navigate([`/books/delete/${bookId}`]);
   }
 }
