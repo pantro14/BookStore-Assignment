@@ -13,8 +13,8 @@ export class BookDialogComponent implements AfterViewInit {
   private readonly dialog = inject(MatDialog);
 
   readonly bookData = input.required<BookFormValue>();
-  protected readonly dialogSubmit = output<BookFormData>();
-  protected readonly dialogClose = output<void>();
+  readonly dialogSubmit = output<BookFormData>();
+  readonly dialogClose = output<void>();
 
   ngAfterViewInit(): void {
     this.openDialog();
