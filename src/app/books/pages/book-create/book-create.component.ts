@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 
-import { BookDialogComponent } from '../book-dialog/book-dialog.component';
+import { BookDialogComponent } from '../../components/book-dialog/book-dialog.component';
 
 @Component({
   selector: 'mxs-book-create',
   imports: [BookDialogComponent],
   template: `
     <mxs-book-dialog
-      [initialData]="initialData()"
+      [bookData]="bookData()"
       (dialogSubmit)="onSubmit($event)"
       (dialogClose)="onClose()"
     ></mxs-book-dialog>
@@ -19,18 +19,18 @@ import { BookDialogComponent } from '../book-dialog/book-dialog.component';
 export class BookCreateComponent {
   protected readonly bookStore = inject(BookStore);
 
-  protected readonly initialData = signal({
-    title: '',
-    price: 0,
-    pageCount: 0,
+  protected readonly bookData = signal({
+    title: null,
+    price: null,
+    pageCount: null,
     onSale: false,
   });
 
-  onSubmit(newBook: BookFormData): void {
+  protected onSubmit(newBook: BookFormData): void {
     this.bookStore.addBook(newBook);
   }
 
-  onClose(): void {
+  protected onClose(): void {
     this.bookStore.nagivageToBookList();
   }
 }

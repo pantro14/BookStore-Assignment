@@ -27,11 +27,11 @@ import { BookDTO } from '@openapi';
     MatSortModule,
     CurrencyPipe,
   ],
-  templateUrl: './books-page.component.html',
-  styleUrl: './books-page.component.scss',
+  templateUrl: './book-list.component.html',
+  styleUrl: './book-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BooksPageComponent {
+export class BookListComponent {
   protected readonly router = inject(Router);
   protected readonly bookStore = inject(BookStore);
 
@@ -48,7 +48,7 @@ export class BooksPageComponent {
       const paginator = this.paginator();
       const sort = this.sort();
       if (paginator && sort) {
-        this.dataSource = new MatTableDataSource<BookDTO>(this.bookStore.entities());
+        this.dataSource = new MatTableDataSource<BookDTO>(this.bookStore.bookList());
         this.dataSource.paginator = paginator;
         this.dataSource.sort = sort;
       }
@@ -64,6 +64,6 @@ export class BooksPageComponent {
   }
 
   deleteBook(bookId: string) {
-    //to implement
+    this.router.navigate([`/books/delete/${bookId}`]);
   }
 }

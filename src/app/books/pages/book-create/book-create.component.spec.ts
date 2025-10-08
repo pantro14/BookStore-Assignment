@@ -1,12 +1,12 @@
 import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 import { BookstoreBffService } from '@openapi';
 
-import { BookFormComponent } from './book-form.component';
+import { BookCreateComponent } from './book-create.component';
 
-describe('BookFormComponent', () => {
-  let spectator: Spectator<BookFormComponent>;
+describe('BookCreateComponent', () => {
+  let spectator: Spectator<BookCreateComponent>;
   const createComponent = createComponentFactory({
-    component: BookFormComponent,
+    component: BookCreateComponent,
     imports: [],
     mocks: [BookstoreBffService],
   });

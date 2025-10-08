@@ -1,6 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BookDialogData, BookFormData } from '@app/books/interfaces';
+import { BookDialogData, BookFormData, BookFormValue } from '@app/books/interfaces';
 
 import { BookFormComponent } from '../book-form/book-form.component';
 
@@ -10,12 +10,11 @@ import { BookFormComponent } from '../book-form/book-form.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDialogComponent implements AfterViewInit {
-  @Input() initialData!: BookDialogData['bookFormData'];
+  private readonly dialog = inject(MatDialog);
 
-  @Output() dialogSubmit = new EventEmitter<BookFormData>();
-  @Output() dialogClose = new EventEmitter<void>();
-
-  constructor(private dialog: MatDialog) {}
+  readonly bookData = input.required<BookFormValue>();
+  protected readonly dialogSubmit = output<BookFormData>();
+  protected readonly dialogClose = output<void>();
 
   ngAfterViewInit(): void {
     this.openDialog();
@@ -26,7 +25,7 @@ export class BookDialogComponent implements AfterViewInit {
       width: '450px',
       disableClose: true,
       data: {
-        bookFormData: this.initialData,
+        bookFormData: this.bookData(),
         onSubmit: (data: BookFormData) => {
           this.dialogSubmit.emit(data);
           this.dialog.closeAll();

@@ -50,7 +50,9 @@
       </mat-card-content>
       <mat-card-actions align="end">
         <button mat-flat-button type="button" (click)="onCancel()" style="margin-right: 8px">Cancel</button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="bookForm.invalid">Submit</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="bookForm.invalid || isFormValueUnchanged">
+          Submit
+        </button>
       </mat-card-actions>
     </mat-card>
   </form>

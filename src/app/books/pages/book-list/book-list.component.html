@@ -1,34 +1,32 @@
 <mat-card class="books-card" appearance="outlined">
   <mat-card-header>
-    <mat-card-title>Books</mat-card-title>
+    <mat-card-title data-testid="card-title">Books</mat-card-title>
   </mat-card-header>
   <mat-divider></mat-divider>
   <mat-card-content class="spaced-content">
     <div class="panel">
-      <button mat-flat-button (click)="createBook()">New Book</button>
-      <p><mat-slide-toggle>On Sale</mat-slide-toggle></p>
+      <button mat-flat-button (click)="createBook()" data-testid="new-book-button">New Book</button>
+      <p><mat-slide-toggle data-testid="on-sale-book-toggle">On Sale</mat-slide-toggle></p>
     </div>
 
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-      <!-- Title Column -->
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" data-testid="books-table">
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
         <td mat-cell *matCellDef="let book">{{ book.title }}</td>
       </ng-container>
 
-      <!-- Price Column -->
       <ng-container matColumnDef="price">
         <th mat-header-cell *matHeaderCellDef>Price</th>
-        <td mat-cell *matCellDef="let book">{{ book.price | currency: 'DKK' : 'symbol' : '1.2-2' : 'da-DK' }}</td>
+        <td mat-cell *matCellDef="let book" data-testid="book-price">
+          {{ book.price | currency: 'DKK' : 'symbol' : '1.2-2' : 'da-DK' }}
+        </td>
       </ng-container>
 
-      <!-- On Sale Column -->
       <ng-container matColumnDef="onSale">
         <th mat-header-cell *matHeaderCellDef>On Sale</th>
         <td mat-cell *matCellDef="let book">{{ book.onSale ? 'Yes' : 'No' }}</td>
       </ng-container>
 
-      <!-- Edit Column -->
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let book">
@@ -38,7 +36,6 @@
         </td>
       </ng-container>
 
-      <!-- Delete Column -->
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let book">
@@ -49,9 +46,13 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns()" data-testid="book-item"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[10, 20]" aria-label="Select page of users"></mat-paginator>
+    <mat-paginator
+      [pageSizeOptions]="[10, 20]"
+      aria-label="Select page of users"
+      data-testid="paginator"
+    ></mat-paginator>
   </mat-card-content>
 </mat-card>
 <router-outlet></router-outlet>
