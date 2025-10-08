@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -23,22 +23,22 @@ import { BookDialogData, BookFormData, BookFormType } from '@app/books/interface
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookFormComponent {
-  @Input() initialData: { title?: string; author?: string } | null = null;
   readonly data = inject<BookDialogData>(MAT_DIALOG_DATA);
   private formBuilder = inject(FormBuilder);
 
   readonly bookForm: FormGroup<BookFormType>;
 
   constructor() {
+    const { title, price, pageCount, onSale } = this.data.bookFormData;
     this.bookForm = this.formBuilder.group<BookFormType>({
-      title: this.formBuilder.control<string | null>('', [Validators.required, this.titleValidator]),
-      price: this.formBuilder.control<number | null>(null, [Validators.required, Validators.min(0.01)]),
-      pageCount: this.formBuilder.control<number | null>(null, [
+      title: this.formBuilder.control<string>(title, [Validators.required, this.titleValidator]),
+      price: this.formBuilder.control<number>(price, [Validators.required, Validators.min(0.01)]),
+      pageCount: this.formBuilder.control<number>(pageCount, [
         Validators.required,
         Validators.min(1),
         Validators.pattern('^[0-9]+$'),
       ]),
-      onSale: this.formBuilder.control<boolean | null>(false),
+      onSale: this.formBuilder.control<boolean>(onSale),
     });
   }
 

@@ -48,7 +48,7 @@ export class BooksPageComponent {
       const paginator = this.paginator();
       const sort = this.sort();
       if (paginator && sort) {
-        this.dataSource = new MatTableDataSource<BookDTO>(this.bookStore.entities());
+        this.dataSource = new MatTableDataSource<BookDTO>(this.bookStore.bookList());
         this.dataSource.paginator = paginator;
         this.dataSource.sort = sort;
       }

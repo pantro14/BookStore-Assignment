@@ -1,15 +1,37 @@
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { patchState, signalStore, withMethods } from '@ngrx/signals';
-import { addEntities, prependEntity, withEntities } from '@ngrx/signals/entities';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { addEntities, EntityId, prependEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { BookCreateDTO, BookDTO, BookstoreBffService } from '@openapi';
 import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
 
+import { BookFormData } from '../interfaces';
+
+export type SelectedEntityState = { selectedBookId: EntityId | null };
+
 export const BookStore = signalStore(
   { providedIn: 'root' },
   withEntities<BookDTO>(),
+  withState<SelectedEntityState>({ selectedBookId: null }),
+  withComputed(({ entityMap, selectedBookId }) => ({
+    bookList: computed(() => Object.values(entityMap())),
+    selectedBook: computed<BookFormData | null>(() => {
+      const selectedId = selectedBookId();
+      if (!selectedId) {
+        return null;
+      }
+
+      const selectedEntity = entityMap()[selectedId];
+      if (!selectedEntity) {
+        return null;
+      }
+
+      const { title, price, pageCount, onSale } = selectedEntity;
+      return { title, price, pageCount, onSale } as BookFormData;
+    }),
+  })),
   withMethods(
     (
       store,
@@ -19,6 +41,9 @@ export const BookStore = signalStore(
     ) => ({
       nagivageToBookList: () => {
         router.navigate(['/books']);
+      },
+      setSelectedBookId: (id: EntityId | null) => {
+        patchState(store, { selectedBookId: id });
       },
       loadBooks: rxMethod<void>(
         pipe(

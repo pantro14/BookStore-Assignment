@@ -1,20 +1,41 @@
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { BookFormData } from '@app/books/interfaces';
+import { BookStore } from '@app/books/stores/book-store';
+
+import { BookDialogComponent } from '../book-dialog/book-dialog.component';
 
 @Component({
   selector: 'mxs-book-edit',
-  imports: [],
-  templateUrl: './book-edit.component.html',
+  imports: [BookDialogComponent],
+  template: `
+    @let bookDataValue = bookData();
+    @if (bookDataValue !== null) {
+      <mxs-book-dialog
+        [initialData]="bookDataValue"
+        (dialogSubmit)="onSubmit($event)"
+        (dialogClose)="onClose()"
+      ></mxs-book-dialog>
+    }
+  `,
   styleUrl: './book-edit.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookEditComponent {
-  protected readonly router = inject(Router);
-  protected readonly route = inject(ActivatedRoute);
+  protected readonly bookStore = inject(BookStore);
+  readonly bookId = input.required<number>();
+  protected bookData = this.bookStore.selectedBook;
 
-  @Input() bookId = '';
+  constructor() {
+    effect(() => {
+      this.bookStore.setSelectedBookId(this.bookId());
+    });
+  }
 
-  close() {
-    this.router.navigate(['/books']);
+  onSubmit(book: BookFormData): void {
+    this.bookStore.addBook(book);
+  }
+
+  onClose(): void {
+    this.bookStore.nagivageToBookList();
   }
 }
