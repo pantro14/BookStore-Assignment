@@ -6,12 +6,12 @@ import { BookStore } from '@app/books/stores/book-store';
 import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 import { BookDTO, BookstoreBffService } from '@openapi';
 
-import { BooksPageComponent } from './books-page.component';
+import { BookListComponent } from './book-list.component';
 
 registerLocaleData(localeDa, 'da-DK');
 
-describe('BooksPageComponent', () => {
-  let spectator: Spectator<BooksPageComponent>;
+describe('BookListComponent', () => {
+  let spectator: Spectator<BookListComponent>;
 
   const bookStore = {
     loadBooks: jest.fn(),
@@ -23,7 +23,7 @@ describe('BooksPageComponent', () => {
   };
 
   const createComponent = createComponentFactory({
-    component: BooksPageComponent,
+    component: BookListComponent,
     imports: [],
     mocks: [BookstoreBffService],
     providers: [

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookDialogData, BookFormData, BookFormValue } from '@app/books/interfaces';
 
@@ -10,11 +10,11 @@ import { BookFormComponent } from '../book-form/book-form.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDialogComponent implements AfterViewInit {
+  private readonly dialog = inject(MatDialog);
+
   readonly bookData = input.required<BookFormValue>();
   protected readonly dialogSubmit = output<BookFormData>();
   protected readonly dialogClose = output<void>();
-
-  constructor(private dialog: MatDialog) {}
 
   ngAfterViewInit(): void {
     this.openDialog();

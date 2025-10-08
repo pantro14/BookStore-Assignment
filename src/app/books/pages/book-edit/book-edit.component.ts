@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angu
 import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 
-import { BookDialogComponent } from '../book-dialog/book-dialog.component';
+import { BookDialogComponent } from '../../components/book-dialog/book-dialog.component';
 
 @Component({
   selector: 'mxs-book-edit',

@@ -27,11 +27,11 @@ import { BookDTO } from '@openapi';
     MatSortModule,
     CurrencyPipe,
   ],
-  templateUrl: './books-page.component.html',
-  styleUrl: './books-page.component.scss',
+  templateUrl: './book-list.component.html',
+  styleUrl: './book-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BooksPageComponent {
+export class BookListComponent {
   protected readonly router = inject(Router);
   protected readonly bookStore = inject(BookStore);
 
