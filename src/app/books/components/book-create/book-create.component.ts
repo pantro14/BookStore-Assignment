@@ -1,16 +1,36 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { BookFormData } from '@app/books/interfaces';
+import { BookStore } from '@app/books/stores/book-store';
+
+import { BookDialogComponent } from '../book-dialog/book-dialog.component';
 
 @Component({
   selector: 'mxs-book-create',
-  imports: [],
-  templateUrl: './book-create.component.html',
-  styleUrl: './book-create.component.scss',
+  imports: [BookDialogComponent],
+  template: `
+    <mxs-book-dialog
+      [initialData]="initialData()"
+      (dialogSubmit)="onSubmit($event)"
+      (dialogClose)="onClose()"
+    ></mxs-book-dialog>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookCreateComponent {
-  protected readonly router = inject(Router);
-  close() {
-    this.router.navigate(['/books']);
+  protected readonly bookStore = inject(BookStore);
+
+  protected readonly initialData = signal({
+    title: '',
+    price: 0,
+    pageCount: 0,
+    onSale: false,
+  });
+
+  onSubmit(newBook: BookFormData): void {
+    this.bookStore.addBook(newBook);
+  }
+
+  onClose(): void {
+    this.bookStore.nagivageToBookList();
   }
 }

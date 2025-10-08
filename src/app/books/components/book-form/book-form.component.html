@@ -1,1 +1,57 @@
-<p>book-form works!</p>
+<!-- book-form.component.html -->
+<div mat-dialog-content>
+  <!-- book-form.component.html -->
+  <form [formGroup]="bookForm" class="book-form-flex" novalidate (ngSubmit)="onSubmit()">
+    <mat-card>
+      <mat-card-title>Add Book Details</mat-card-title>
+      <mat-card-content>
+        <div class="flex-container">
+          <!-- Title -->
+          <mat-form-field appearance="outline" class="flex-item">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" autocomplete="off" />
+            @if (title?.touched && title?.invalid) { @if (title?.errors?.required) {
+            <mat-error>Title is required.</mat-error>
+            } @else if (title?.errors?.pattern) {
+            <mat-error>Title contains invalid characters.</mat-error>
+            } }
+            <mat-hint>Alphanumeric and allowed symbols only.</mat-hint>
+          </mat-form-field>
+
+          <!-- Price -->
+          <mat-form-field appearance="outline" class="flex-item">
+            <mat-label>Price</mat-label>
+            <input matInput type="number" formControlName="price" />
+            @if (price?.touched && price?.invalid) { @if (price?.errors?.required) {
+            <mat-error>Price is required.</mat-error>
+            } @else if (price?.errors?.min) {
+            <mat-error>Price must be at least 0.01.</mat-error>
+            } }
+          </mat-form-field>
+        </div>
+
+        <div class="flex-container">
+          <!-- Page Count -->
+          <mat-form-field appearance="outline" class="flex-item">
+            <mat-label>Page Count</mat-label>
+            <input matInput type="number" formControlName="pageCount" />
+            @if (pageCount?.touched && pageCount?.invalid) { @if (pageCount?.errors?.required) {
+            <mat-error>Page count is required.</mat-error>
+            } @else if (pageCount?.errors?.min) {
+            <mat-error>Page count must be at least 1.</mat-error>
+            } @else if (pageCount?.errors?.pattern) {
+            <mat-error>Page count must be a whole number.</mat-error>
+            } }
+          </mat-form-field>
+
+          <!-- On Sale -->
+          <mat-checkbox formControlName="onSale" class="flex-item">On Sale</mat-checkbox>
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-flat-button type="button" (click)="onCancel()" style="margin-right: 8px">Cancel</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="bookForm.invalid">Submit</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

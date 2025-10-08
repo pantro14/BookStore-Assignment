@@ -1,0 +1,32 @@
+.book-form-flex {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column; // Changed to column layout
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.flex-item {
+  flex: 1 1 auto; // Adjusted to auto for better flexibility
+  width: 100%; // Ensures each item spans the full width
+}
+
+mat-card {
+  padding: 24px 16px;
+}
+
+mat-card-title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+mat-card-actions {
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
