@@ -31,8 +31,8 @@ export class BookEditComponent {
     });
   }
 
-  onSubmit(book: BookFormData): void {
-    this.bookStore.addBook(book);
+  onSubmit(bookFormData: BookFormData): void {
+    this.bookStore.updateBook({ bookId: this.bookId().toString(), bookFormData });
   }
 
   onClose(): void {

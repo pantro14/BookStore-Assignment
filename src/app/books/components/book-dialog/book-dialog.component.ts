@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BookDialogData, BookFormData } from '@app/books/interfaces';
+import { BookDialogData, BookFormData, BookFormValue } from '@app/books/interfaces';
 
 import { BookFormComponent } from '../book-form/book-form.component';
 
@@ -10,7 +10,7 @@ import { BookFormComponent } from '../book-form/book-form.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDialogComponent implements AfterViewInit {
-  @Input() initialData!: BookDialogData['bookFormData'];
+  @Input() initialData!: BookFormValue;
 
   @Output() dialogSubmit = new EventEmitter<BookFormData>();
   @Output() dialogClose = new EventEmitter<void>();

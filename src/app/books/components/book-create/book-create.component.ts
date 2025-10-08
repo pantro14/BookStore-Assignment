@@ -20,9 +20,9 @@ export class BookCreateComponent {
   protected readonly bookStore = inject(BookStore);
 
   protected readonly initialData = signal({
-    title: '',
-    price: 0,
-    pageCount: 0,
+    title: null,
+    price: null,
+    pageCount: null,
     onSale: false,
   });
 

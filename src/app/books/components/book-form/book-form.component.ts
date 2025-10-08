@@ -31,14 +31,14 @@ export class BookFormComponent {
   constructor() {
     const { title, price, pageCount, onSale } = this.data.bookFormData;
     this.bookForm = this.formBuilder.group<BookFormType>({
-      title: this.formBuilder.control<string>(title, [Validators.required, this.titleValidator]),
-      price: this.formBuilder.control<number>(price, [Validators.required, Validators.min(0.01)]),
-      pageCount: this.formBuilder.control<number>(pageCount, [
+      title: this.formBuilder.control<string | null>(title, [Validators.required, this.titleValidator]),
+      price: this.formBuilder.control<number | null>(price, [Validators.required, Validators.min(0.01)]),
+      pageCount: this.formBuilder.control<number | null>(pageCount, [
         Validators.required,
         Validators.min(1),
         Validators.pattern('^[0-9]+$'),
       ]),
-      onSale: this.formBuilder.control<boolean>(onSale),
+      onSale: this.formBuilder.control<boolean | null>(onSale),
     });
   }
 
@@ -59,6 +59,12 @@ export class BookFormComponent {
   }
   get pageCount() {
     return this.bookForm.get('pageCount');
+  }
+
+  get isFormValueUnchanged(): boolean {
+    return Object.entries(this.bookForm.value).every(([key, value]) => {
+      return value === this.data.bookFormData[key as keyof BookFormData];
+    });
   }
 
   onSubmit() {
