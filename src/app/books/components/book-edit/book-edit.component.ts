@@ -11,7 +11,7 @@ import { BookDialogComponent } from '../book-dialog/book-dialog.component';
     @let bookDataValue = bookData();
     @if (bookDataValue !== null) {
       <mxs-book-dialog
-        [initialData]="bookDataValue"
+        [bookData]="bookDataValue"
         (dialogSubmit)="onSubmit($event)"
         (dialogClose)="onClose()"
       ></mxs-book-dialog>

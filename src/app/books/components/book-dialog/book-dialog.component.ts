@@ -10,7 +10,7 @@ import { BookFormComponent } from '../book-form/book-form.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDialogComponent implements AfterViewInit {
-  readonly initialData = input.required<BookFormValue>();
+  readonly bookData = input.required<BookFormValue>();
   protected readonly dialogSubmit = output<BookFormData>();
   protected readonly dialogClose = output<void>();
 
@@ -25,7 +25,7 @@ export class BookDialogComponent implements AfterViewInit {
       width: '450px',
       disableClose: true,
       data: {
-        bookFormData: this.initialData(),
+        bookFormData: this.bookData(),
         onSubmit: (data: BookFormData) => {
           this.dialogSubmit.emit(data);
           this.dialog.closeAll();

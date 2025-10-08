@@ -6,14 +6,13 @@
 
 .flex-container {
   display: flex;
-  flex-direction: column; // Changed to column layout
-  gap: 16px;
+  flex-direction: column;
   margin-bottom: 16px;
 }
 
 .flex-item {
-  flex: 1 1 auto; // Adjusted to auto for better flexibility
-  width: 100%; // Ensures each item spans the full width
+  flex: 1 1 auto;
+  width: 100%;
 }
 
 mat-card {

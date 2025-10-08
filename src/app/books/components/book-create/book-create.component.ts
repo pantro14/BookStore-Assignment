@@ -9,7 +9,7 @@ import { BookDialogComponent } from '../book-dialog/book-dialog.component';
   imports: [BookDialogComponent],
   template: `
     <mxs-book-dialog
-      [initialData]="initialData()"
+      [bookData]="bookData()"
       (dialogSubmit)="onSubmit($event)"
       (dialogClose)="onClose()"
     ></mxs-book-dialog>
@@ -19,7 +19,7 @@ import { BookDialogComponent } from '../book-dialog/book-dialog.component';
 export class BookCreateComponent {
   protected readonly bookStore = inject(BookStore);
 
-  protected readonly initialData = signal({
+  protected readonly bookData = signal({
     title: null,
     price: null,
     pageCount: null,
