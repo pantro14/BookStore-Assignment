@@ -26,15 +26,19 @@ export class BookDialogComponent implements AfterViewInit {
       disableClose: true,
       data: {
         bookFormData: this.bookData(),
-        onSubmit: (data: BookFormData) => {
-          this.dialogSubmit.emit(data);
-          this.dialog.closeAll();
-        },
-        onClose: () => {
-          this.dialogClose.emit();
-          this.dialog.closeAll();
-        },
+        onSubmit: this.onSubmit.bind(this),
+        onClose: this.onClose.bind(this),
       },
     });
+  }
+
+  onSubmit(data: BookFormData) {
+    this.dialogSubmit.emit(data);
+    this.dialog.closeAll();
+  }
+
+  onClose() {
+    this.dialogClose.emit();
+    this.dialog.closeAll();
   }
 }
