@@ -4,7 +4,7 @@ import { signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookStore } from '@app/books/stores/book-store';
 import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
-import { BookDTO, BookstoreBffService } from '@openapi';
+import { BookDTO } from '@openapi';
 
 import { BookListComponent } from './book-list.component';
 
@@ -24,8 +24,6 @@ describe('BookListComponent', () => {
 
   const createComponent = createComponentFactory({
     component: BookListComponent,
-    imports: [],
-    mocks: [BookstoreBffService],
     providers: [
       { provide: BookStore, useValue: bookStore },
       { provide: Router, useValue: { navigate: jest.fn() } },

@@ -68,11 +68,7 @@ export class BookFormComponent {
   }
 
   onSubmit() {
-    if (this.bookForm.valid) {
-      this.data.onSubmit(this.bookForm.value as BookFormData);
-    } else {
-      this.bookForm.markAllAsTouched();
-    }
+    this.data.onSubmit(this.bookForm.value as BookFormData);
   }
 
   onCancel() {
