@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 
@@ -21,8 +21,8 @@ import { BookDialogComponent } from '../../components/book-dialog/book-dialog.co
 })
 export class BookEditComponent {
   protected readonly bookStore = inject(BookStore);
-  readonly bookId = input.required<number>();
-  protected readonly bookData = this.bookStore.selectedBook;
+  readonly bookId = input.required<string>();
+  protected readonly bookData = computed(() => this.bookStore.selectedBook());
 
   constructor() {
     effect(() => {

@@ -28,3 +28,13 @@ if (!Object.getOwnPropertyDescriptor(document.body.style, 'transform')) {
 
 /* output shorter and more meaningful Zone error stack traces */
 // Error.stackTraceLimit = 2;
+
+//monkey-patch console.error to ignore specific jsdom css errors
+//https://github.com/jsdom/jsdom/issues/2177#issuecomment-1724971596
+const originalConsoleError = console.error;
+const jsDomCssError = 'Error: Could not parse CSS stylesheet';
+console.error = (...params) => {
+  if (!params.find(p => p.toString().includes(jsDomCssError))) {
+    originalConsoleError(...params);
+  }
+};
