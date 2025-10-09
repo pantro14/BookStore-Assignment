@@ -1,16 +1,11 @@
 import { expect, test } from '@playwright/test';
+import { mockApiResponse } from 'e2e/helpers/mock-api-response';
 
-import data from '../../mocks/api-data/book/books_get_200_data.json';
+import data from '../../../mocks/api-data/book/books_get_200_data.json';
 
 test.describe('Use Case 1: viewing all books ', () => {
   test.beforeEach(async ({ page }) => {
-    await page.route('**/book-store-bff/v1/books?onSale=false', async route => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify(data),
-      });
-    });
+    await mockApiResponse(page, '**/book-store-bff/v1/books?onSale=false', data);
   });
 
   test('should show the book table', async ({ page }) => {
