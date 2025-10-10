@@ -112,4 +112,19 @@ describe('BookListComponent', () => {
       expect(paginator.getAttribute('ng-reflect-page-size-options')).toBe('10,20');
     });
   });
+
+  describe('On sale books', () => {
+    it('should check on sale books toggle', () => {
+      const onSaleToggle = spectator.query(byTestId('on-sale-book-toggle')) as HTMLElement;
+      const button = onSaleToggle.querySelector('button') as HTMLButtonElement;
+      expect(button).toBeVisible();
+
+      const bookStore = spectator.inject(BookStore);
+      const loadBooksSpy = jest.spyOn(bookStore, 'loadBooks');
+
+      spectator.click(button);
+
+      expect(loadBooksSpy).toHaveBeenCalledWith({ onSale: true });
+    });
+  });
 });

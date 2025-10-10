@@ -2,7 +2,14 @@ import { computed, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
-import { addEntities, EntityId, prependEntity, updateEntity, withEntities } from '@ngrx/signals/entities';
+import {
+  addEntities,
+  EntityId,
+  prependEntity,
+  removeAllEntities,
+  updateEntity,
+  withEntities,
+} from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { BookCreateDTO, BookDTO, BookstoreBffService, BookUpdateDTO } from '@openapi';
 import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
@@ -50,12 +57,15 @@ export const BookStore = signalStore(
       setSelectedBookId: (id: EntityId | null) => {
         patchState(store, { selectedBookId: id });
       },
-      loadBooks: rxMethod<void>(
+      loadBooks: rxMethod<{ onSale: boolean }>(
         pipe(
-          switchMap(() =>
-            bookstoreBffService
-              .getBooks({ onSale: false })
-              .pipe(tap(books => patchState(store, addEntities([...books]))))
+          switchMap(({ onSale }) =>
+            bookstoreBffService.getBooks({ onSale }).pipe(
+              tap(books => {
+                patchState(store, removeAllEntities());
+                patchState(store, addEntities([...books]));
+              })
+            )
           )
         )
       ),

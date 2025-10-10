@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterModule } from '@angular/router';
@@ -43,7 +43,7 @@ export class BookListComponent {
   readonly displayedColumns = signal<string[]>(['title', 'price', 'onSale', 'edit', 'delete']);
 
   constructor() {
-    this.bookStore.loadBooks();
+    this.bookStore.loadBooks({ onSale: false });
     effect(() => {
       const paginator = this.paginator();
       const sort = this.sort();
@@ -57,6 +57,11 @@ export class BookListComponent {
 
   createBook() {
     this.router.navigate(['/books/new']);
+  }
+
+  onSaleToggle(event: MatSlideToggleChange) {
+    const isChecked = event.checked;
+    this.bookStore.loadBooks({ onSale: isChecked });
   }
 
   editBook(bookId: string) {
