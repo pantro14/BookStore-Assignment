@@ -1,12 +1,9 @@
-<!-- book-form.component.html -->
 <div mat-dialog-content>
-  <!-- book-form.component.html -->
   <form [formGroup]="bookForm" class="book-form-flex" novalidate (ngSubmit)="onSubmit()" data-testid="book-form">
     <mat-card>
       <mat-card-title>Add Book Details</mat-card-title>
       <mat-card-content>
         <div class="flex-container">
-          <!-- Title -->
           <mat-form-field appearance="outline" class="flex-item">
             <mat-label>Title</mat-label>
             <input matInput formControlName="title" autocomplete="off" data-testid="title-input" />
@@ -18,7 +15,6 @@
             <mat-hint>Alphanumeric and allowed symbols only.</mat-hint>
           </mat-form-field>
 
-          <!-- Price -->
           <mat-form-field appearance="outline" class="flex-item">
             <mat-label>Price</mat-label>
             <input matInput type="number" formControlName="price" data-testid="price-input" />
@@ -31,7 +27,6 @@
         </div>
 
         <div class="flex-container">
-          <!-- Page Count -->
           <mat-form-field appearance="outline" class="flex-item">
             <mat-label>Page Count</mat-label>
             <input matInput type="number" formControlName="pageCount" data-testid="page-count-input" />
@@ -44,8 +39,7 @@
             } }
           </mat-form-field>
 
-          <!-- On Sale -->
-          <mat-checkbox formControlName="onSale" class="flex-item">On Sale</mat-checkbox>
+          <mat-checkbox formControlName="onSale" class="flex-item" data-testid="on-sale-checkbox">On Sale</mat-checkbox>
         </div>
       </mat-card-content>
       <mat-card-actions align="end">

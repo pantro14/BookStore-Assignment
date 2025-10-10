@@ -178,9 +178,6 @@ describe('BookStore', () => {
 
       store.loadBooks();
       store.setSelectedBookId('2');
-
-      console.log(JSON.stringify(store.selectedBook()));
-
       const { id, ...bookData } = listOfBooks[1];
 
       expect(store.selectedBook()).toEqual(bookData);

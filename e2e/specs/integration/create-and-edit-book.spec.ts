@@ -1,0 +1,52 @@
+import { expect, test } from '@playwright/test';
+import { mockApiResponse } from 'e2e/helpers/mock-api-response';
+
+import bookListData from '../../../mocks/api-data/book/books_get_200_data.json';
+
+test.describe('Happy flow: book creation and edition at once', () => {
+  test.beforeEach(async ({ page }) => {
+    await mockApiResponse({ page, url: '**/*/v1/books?onSale=false', data: bookListData });
+  });
+
+  test('should add a book and edited', async ({ page }) => {
+    await page.goto('/');
+
+    const addBookButton = page.getByTestId('new-book-button');
+    const titleInput = page.getByTestId('title-input');
+    const priceInput = page.getByTestId('price-input');
+    const pageCountInput = page.getByTestId('page-count-input');
+    const onSaleCheckbox = page.getByTestId('on-sale-checkbox').getByRole('checkbox');
+    const submitButton = page.getByTestId('submit-button');
+    const nextPageButton = page.locator('button[aria-label="Next page"]');
+
+    await addBookButton.click();
+
+    await titleInput.fill('The lord of the rings');
+    await priceInput.fill('100.99');
+    await pageCountInput.fill('700');
+    await onSaleCheckbox.click();
+    await submitButton.click();
+
+    await expect(page.getByText('Book "The lord of the rings" added successfully!')).toBeVisible();
+
+    await nextPageButton.click();
+
+    const bookTable = page.getByTestId('books-table');
+
+    await expect(bookTable.getByText('The lord of the rings')).toBeVisible();
+    await expect(bookTable.getByText('100,99 kr.')).toBeVisible();
+
+    const editButton = bookTable.getByTitle('Edit Book').nth(9);
+    await editButton.click();
+
+    await expect(page.getByTestId('book-form')).toBeVisible();
+
+    await titleInput.fill('The lord of the rings delux edition');
+    await priceInput.fill('150.50');
+    await pageCountInput.fill('800');
+    await onSaleCheckbox.click();
+    await submitButton.click();
+
+    await expect(page.getByText('Book "The lord of the rings delux edition" edited successfully!')).toBeVisible();
+  });
+});
