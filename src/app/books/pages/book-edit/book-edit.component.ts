@@ -9,7 +9,7 @@ import { BookDialogComponent } from '../../components/book-dialog/book-dialog.co
   imports: [BookDialogComponent],
   template: `
     @let bookDataValue = bookData();
-    @if (bookDataValue !== null) {
+    @if (bookDataValue) {
       <mxs-book-dialog
         [bookAction]="BookAction"
         [bookData]="bookDataValue"

@@ -31,7 +31,6 @@ export const BookStore = signalStore(
       }
 
       const selectedEntity = entityMap()[selectedId];
-      console.log('Entity Map: ', entityMap());
       if (!selectedEntity) {
         return null;
       }
@@ -54,12 +53,6 @@ export const BookStore = signalStore(
     ) => ({
       nagivageToBookList: () => {
         router.navigate(['/books']);
-      },
-      showNoBookSnackbar: () => {
-        snackBar.open(`That book does not exist`, 'Close', {
-          duration: 3000,
-          verticalPosition: 'top',
-        });
       },
       setSelectedBookId: (id: EntityId | null) => {
         patchState(store, { selectedBookId: id });

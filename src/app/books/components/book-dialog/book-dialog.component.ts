@@ -14,7 +14,7 @@ export class BookDialogComponent implements AfterViewInit {
   private readonly dialog = inject(MatDialog);
 
   readonly bookAction = input.required<BookAction>();
-  readonly bookData = input.required<BookFormValue>();
+  readonly bookData = input<BookFormValue>();
   readonly dialogSubmit = output<BookFormData>();
   readonly dialogClose = output<void>();
 
