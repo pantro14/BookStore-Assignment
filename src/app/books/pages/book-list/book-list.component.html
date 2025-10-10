@@ -6,7 +6,9 @@
   <mat-card-content class="spaced-content">
     <div class="panel">
       <button mat-flat-button (click)="createBook()" data-testid="new-book-button">New Book</button>
-      <p><mat-slide-toggle data-testid="on-sale-book-toggle">On Sale</mat-slide-toggle></p>
+      <p>
+        <mat-slide-toggle (change)="onSaleToggle($event)" data-testid="on-sale-book-toggle">On Sale</mat-slide-toggle>
+      </p>
     </div>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" data-testid="books-table">

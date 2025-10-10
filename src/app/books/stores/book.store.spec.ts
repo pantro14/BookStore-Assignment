@@ -63,7 +63,7 @@ describe('BookStore', () => {
       bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
       const store = createService().service;
 
-      store.loadBooks();
+      store.loadBooks({ onSale: false });
 
       expect(store.bookList()).toEqual(listOfBooks);
     });
@@ -117,7 +117,7 @@ describe('BookStore', () => {
 
     beforeEach(() => {
       bookstoreBffService.getBooks.mockReturnValue(of([existingBook]));
-      store.loadBooks();
+      store.loadBooks({ onSale: false });
     });
 
     it('should update a book and update the state', () => {
@@ -129,7 +129,7 @@ describe('BookStore', () => {
       const snackbar = spectator.inject(MatSnackBar);
       const navigateSpy = jest.spyOn(snackbar, 'open');
 
-      store.loadBooks(); // Ensure the store has the existing book
+      store.loadBooks({ onSale: false });
       store.updateBook({ bookId: '1', bookFormData: updatedBook });
 
       expect(store.bookList()).toEqual([updatedBook]);
@@ -148,7 +148,7 @@ describe('BookStore', () => {
       const snackbar = spectator.inject(MatSnackBar);
       const navigateSpy = jest.spyOn(snackbar, 'open');
 
-      store.loadBooks(); // Ensure the store has the existing book
+      store.loadBooks({ onSale: false });
       store.updateBook({ bookId: '1', bookFormData: updatedBook });
 
       expect(store.bookList()).toEqual([existingBook]);
@@ -176,7 +176,7 @@ describe('BookStore', () => {
       const spectator = createService();
       const store = spectator.service;
 
-      store.loadBooks();
+      store.loadBooks({ onSale: false });
       store.setSelectedBookId('2');
       const { id, ...bookData } = listOfBooks[1];
 
@@ -188,7 +188,7 @@ describe('BookStore', () => {
       const spectator = createService();
       const store = spectator.service;
 
-      store.loadBooks();
+      store.loadBooks({ onSale: false });
       store.setSelectedBookId('999');
 
       expect(store.selectedBook()).toBeNull();
@@ -200,7 +200,7 @@ describe('BookStore', () => {
       const spectator = createService();
       const store = spectator.service;
 
-      store.loadBooks();
+      store.loadBooks({ onSale: false });
       store.setSelectedBookId('1');
 
       expect(store.selectedBook()).toEqual({
@@ -209,6 +209,18 @@ describe('BookStore', () => {
         pageCount: 0,
         onSale: false,
       });
+    });
+  });
+
+  describe('should load on sale books', () => {
+    it('should load only on sale books when onSale is true', () => {
+      const onSaleBooks = [{ id: '2', title: 'Book 2', price: 15, pageCount: 150, onSale: true }];
+      bookstoreBffService.getBooks.mockReturnValue(of(onSaleBooks));
+      const store = createService().service;
+
+      store.loadBooks({ onSale: true });
+
+      expect(store.bookList()).toEqual(onSaleBooks);
     });
   });
 });
