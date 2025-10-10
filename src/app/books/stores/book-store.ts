@@ -64,8 +64,9 @@ export const BookStore = signalStore(
           switchMap(data =>
             bookstoreBffService.createBook({ bookCreateDTO: data }).pipe(
               tap(book => {
-                patchState(store, prependEntity(book));
-                snackBar.open(`Book "${book.title}" added successfully!`, 'Close', {
+                const submitData = { ...data, id: book.id } as BookDTO;
+                patchState(store, prependEntity(submitData));
+                snackBar.open(`Book "${data.title}" added successfully!`, 'Close', {
                   duration: 3000,
                   verticalPosition: 'top',
                 });
@@ -87,9 +88,9 @@ export const BookStore = signalStore(
           switchMap(({ bookId, bookFormData }) => {
             const bookUpdateDTO = { ...bookFormData, lastUpdated: new Date().getTime() } as BookUpdateDTO;
             return bookstoreBffService.updateBook({ bookId, bookUpdateDTO }).pipe(
-              tap(book => {
+              tap(() => {
                 patchState(store, updateEntity({ id: bookId, changes: { ...bookFormData } }));
-                snackBar.open(`Book "${book.title}" edited successfully!`, 'Close', {
+                snackBar.open(`Book "${bookFormData.title}" edited successfully!`, 'Close', {
                   duration: 3000,
                   verticalPosition: 'top',
                 });

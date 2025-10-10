@@ -5,7 +5,7 @@ import data from '../../../mocks/api-data/book/books_get_200_data.json';
 
 test.describe('Use Case 1: viewing all books ', () => {
   test.beforeEach(async ({ page }) => {
-    await mockApiResponse(page, '**/book-store-bff/v1/books?onSale=false', data);
+    await mockApiResponse({ page, url: '**/*/v1/books?onSale=false', data });
   });
 
   test('should show the book table', async ({ page }) => {
