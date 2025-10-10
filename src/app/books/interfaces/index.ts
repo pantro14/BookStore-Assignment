@@ -2,6 +2,7 @@ import { FormControl } from '@angular/forms';
 import { BookDTO } from '@openapi';
 
 export type BookFormData = Required<Omit<BookDTO, 'id' | 'lastUpdated' | 'lastUpdatedBy'>>;
+export type BookAction = 'Create' | 'Edit' | 'View';
 
 export type BookDialogData = {
   bookFormData: BookFormValue;
