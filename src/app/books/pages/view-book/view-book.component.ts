@@ -23,7 +23,14 @@ export class ViewBookComponent {
 
   constructor() {
     effect(() => {
-      this.bookStore.setSelectedBookId(this.bookId());
+      this.bookStore.setSelectedBook(this.bookId());
+    });
+
+    effect(() => {
+      const selectedBook = this.bookStore.selectedBook();
+      if (!selectedBook) {
+        this.bookStore.showBook404Error();
+      }
     });
   }
 

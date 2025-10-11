@@ -49,24 +49,29 @@ describe('BookStore', () => {
 
   it('should have correct initial state', () => {
     expect(store.bookList()).toEqual([]);
-    expect(store.selectedBookId()).toBeNull();
     expect(store.selectedBook()).toBeNull();
   });
 
-  it('should set selectedBookId correctly', () => {
-    store.setSelectedBookId('1');
-    expect(store.selectedBookId()).toBe('1');
-  });
-
   describe('loadBooks', () => {
-    it('should load books and update the state', () => {
+    it('should set a selected book by id', () => {
       bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
       const store = createService().service;
 
+      expect(store.selectedBook()).toBeNull();
+
       store.loadBooks({ onSale: false });
 
-      expect(store.bookList()).toEqual(listOfBooks);
+      expect(store.selectedBook()).toEqual(listOfBooks[0]);
     });
+  });
+
+  it('should set selectedBookId correctly', () => {
+    bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
+    const store = createService().service;
+
+    store.loadBooks({ onSale: false });
+    store.setSelectedBook('1');
+    expect(store.selectedBook()).toBe('1');
   });
 
   describe('addBook', () => {
@@ -177,7 +182,7 @@ describe('BookStore', () => {
       const store = spectator.service;
 
       store.loadBooks({ onSale: false });
-      store.setSelectedBookId('2');
+      store.setSelectedBook('2');
       const { id, ...bookData } = listOfBooks[1];
 
       expect(store.selectedBook()).toEqual(bookData);
@@ -189,7 +194,7 @@ describe('BookStore', () => {
       const store = spectator.service;
 
       store.loadBooks({ onSale: false });
-      store.setSelectedBookId('999');
+      store.setSelectedBook('999');
 
       expect(store.selectedBook()).toBeNull();
     });
@@ -201,7 +206,7 @@ describe('BookStore', () => {
       const store = spectator.service;
 
       store.loadBooks({ onSale: false });
-      store.setSelectedBookId('1');
+      store.setSelectedBook('1');
 
       expect(store.selectedBook()).toEqual({
         title: 'Book 1',

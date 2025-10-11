@@ -1,10 +1,11 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -24,6 +25,7 @@ import { BookDTO } from '@openapi';
     MatSlideToggleModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressBarModule,
     MatSortModule,
     CurrencyPipe,
   ],
@@ -40,7 +42,8 @@ export class BookListComponent {
 
   protected dataSource: MatTableDataSource<BookDTO> = new MatTableDataSource<BookDTO>([]);
 
-  readonly displayedColumns = signal<string[]>(['title', 'price', 'onSale', 'edit', 'delete']);
+  protected readonly displayedColumns = signal<string[]>(['title', 'price', 'onSale', 'edit', 'delete']);
+  protected readonly loading = computed(() => this.bookStore.loading());
 
   constructor() {
     this.bookStore.loadBooks({ onSale: false });

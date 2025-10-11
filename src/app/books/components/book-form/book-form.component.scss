@@ -4,10 +4,14 @@
   margin: auto;
 }
 
+.mat-card-content {
+  margin-bottom: 10px;
+}
+
 .flex-container {
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
+  margin: 16px 0;
 }
 
 .flex-item {

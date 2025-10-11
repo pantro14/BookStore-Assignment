@@ -1,8 +1,13 @@
+@let loadingData = loading();
 <mat-card class="books-card" appearance="outlined">
   <mat-card-header>
     <mat-card-title data-testid="card-title">Books</mat-card-title>
   </mat-card-header>
-  <mat-divider></mat-divider>
+  @if (loadingData) {
+    <mat-progress-bar style="margin: 10px 0" mode="indeterminate"></mat-progress-bar>
+  } @else {
+    <mat-divider></mat-divider>
+  }
   <mat-card-content class="spaced-content">
     <div class="panel">
       <button mat-flat-button (click)="createBook()" data-testid="new-book-button">New Book</button>
@@ -57,4 +62,6 @@
     ></mat-paginator>
   </mat-card-content>
 </mat-card>
-<router-outlet></router-outlet>
+@if (!loadingData) {
+  <router-outlet></router-outlet>
+}
