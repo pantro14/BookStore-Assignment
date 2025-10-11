@@ -67,11 +67,17 @@ export class BookListComponent {
     this.bookStore.loadBooks({ onSale: isChecked });
   }
 
-  editBook(bookId: string) {
+  editBook(e: MouseEvent, bookId: string) {
+    e.stopPropagation();
     this.router.navigate([`/books/edit/${bookId}`]);
   }
 
-  deleteBook(bookId: string) {
+  deleteBook(e: MouseEvent, bookId: string) {
+    e.stopPropagation();
     this.router.navigate([`/books/delete/${bookId}`]);
+  }
+
+  onBookClick({ id: bookId }: BookDTO) {
+    this.router.navigate([`/books/view/${bookId}`]);
   }
 }
