@@ -77,7 +77,7 @@ export class BookListComponent {
     this.router.navigate([`/books/delete/${bookId}`]);
   }
 
-  onBookClick({ id: bookId }: BookDTO) {
+  onViewDetails({ id: bookId }: BookDTO) {
     this.router.navigate([`/books/view/${bookId}`]);
   }
 }

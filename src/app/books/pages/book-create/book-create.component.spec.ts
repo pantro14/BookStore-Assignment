@@ -36,6 +36,7 @@ describe('BookCreateComponent', () => {
 
     it('should test input data', () => {
       expect(dialogComponent).toBeTruthy();
+      expect(dialogComponent?.bookAction).toEqual('Create');
       expect(dialogComponent?.bookData).toEqual({
         title: null,
         price: null,

@@ -12,7 +12,7 @@ import {
 } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { BookCreateDTO, BookDTO, BookstoreBffService, BookUpdateDTO } from '@openapi';
-import { catchError, delay, EMPTY, pipe, switchMap, take, tap } from 'rxjs';
+import { catchError, EMPTY, pipe, switchMap, take, tap } from 'rxjs';
 
 import { BookFormData } from '../interfaces';
 
@@ -62,9 +62,9 @@ export const BookStore = signalStore(
         patchState(store, {
           selectedBook: {
             title,
-            price: price ? Number(price) : 0,
-            pageCount: pageCount ? Number(pageCount) : 0,
-            onSale: onSale ?? false,
+            price: price!,
+            pageCount: pageCount!,
+            onSale: onSale!,
           },
         });
       },
@@ -73,7 +73,7 @@ export const BookStore = signalStore(
           switchMap(({ onSale }) => {
             patchState(store, { loading: true });
             return bookstoreBffService.getBooks({ onSale }).pipe(
-              delay(1000),
+              //delay(1000), added delay to simulate loading, this will break unit tests
               tap(books => {
                 patchState(store, removeAllEntities());
                 patchState(store, addEntities([...books]));

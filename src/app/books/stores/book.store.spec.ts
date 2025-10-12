@@ -52,26 +52,65 @@ describe('BookStore', () => {
     expect(store.selectedBook()).toBeNull();
   });
 
-  describe('loadBooks', () => {
-    it('should set a selected book by id', () => {
-      bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
-      const store = createService().service;
+  describe('book not found: showBook404Error', () => {
+    it('should show a snackbar and navigate to book list', () => {
+      const spectator = createService();
+      const store = spectator.service;
 
-      expect(store.selectedBook()).toBeNull();
+      const snackbar = spectator.inject(MatSnackBar);
+      const router = spectator.inject(Router);
+      const snackBarRef = {
+        afterDismissed: () => of({}),
+      };
+      const openSpy = jest.spyOn(snackbar, 'open').mockReturnValue(snackBarRef as any);
+      const navigateSpy = jest.spyOn(router, 'navigate');
 
-      store.loadBooks({ onSale: false });
+      store.showBook404Error();
 
-      expect(store.selectedBook()).toEqual(listOfBooks[0]);
+      expect(openSpy).toHaveBeenCalledWith('The Book was not found', 'Close', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: 'snackbar-error',
+      });
+      expect(navigateSpy).toHaveBeenCalledWith(['/books']);
     });
   });
 
-  it('should set selectedBookId correctly', () => {
-    bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
-    const store = createService().service;
+  describe('loadBooks', () => {
+    it('should set a list of books', () => {
+      bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
+      const store = createService().service;
 
-    store.loadBooks({ onSale: false });
-    store.setSelectedBook('1');
-    expect(store.selectedBook()).toBe('1');
+      expect(store.bookList()).toEqual([]);
+
+      store.loadBooks({ onSale: false });
+
+      expect(store.bookList()).toEqual(listOfBooks);
+    });
+  });
+
+  describe('setSelectedBook', () => {
+    it('should select a book by id correctly', () => {
+      bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
+      const store = createService().service;
+
+      store.loadBooks({ onSale: false });
+      store.setSelectedBook(listOfBooks[0].id);
+
+      const { id, ...selectedBook } = listOfBooks[0];
+
+      expect(store.selectedBook()).toEqual(selectedBook);
+    });
+
+    it('should not select a book', () => {
+      bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
+      const store = createService().service;
+
+      store.loadBooks({ onSale: false });
+      store.setSelectedBook('999');
+
+      expect(store.selectedBook()).toBeNull();
+    });
   });
 
   describe('addBook', () => {
@@ -94,6 +133,7 @@ describe('BookStore', () => {
       expect(navigateSpy).toHaveBeenCalledWith('Book "New Book" added successfully!', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
+        panelClass: 'snackbar-success',
       });
     });
 
@@ -112,6 +152,7 @@ describe('BookStore', () => {
       expect(navigateSpy).toHaveBeenCalledWith('Book could not be created', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
+        panelClass: 'snackbar-error',
       });
     });
   });
@@ -141,6 +182,7 @@ describe('BookStore', () => {
       expect(navigateSpy).toHaveBeenCalledWith('Book "Updated Book 1" edited successfully!', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
+        panelClass: 'snackbar-success',
       });
     });
 
@@ -160,6 +202,7 @@ describe('BookStore', () => {
       expect(navigateSpy).toHaveBeenCalledWith('Book could not be edited', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
+        panelClass: 'snackbar-error',
       });
     });
   });
@@ -173,48 +216,6 @@ describe('BookStore', () => {
     store.nagivageToBookList();
 
     expect(navigateSpy).toHaveBeenCalledWith(['/books']);
-  });
-
-  describe('selectedBook', () => {
-    it('should return the selected book based on selectedBookId', () => {
-      bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
-      const spectator = createService();
-      const store = spectator.service;
-
-      store.loadBooks({ onSale: false });
-      store.setSelectedBook('2');
-      const { id, ...bookData } = listOfBooks[1];
-
-      expect(store.selectedBook()).toEqual(bookData);
-    });
-
-    it('should return null if selectedBookId does not match any book', () => {
-      bookstoreBffService.getBooks.mockReturnValue(of(listOfBooks));
-      const spectator = createService();
-      const store = spectator.service;
-
-      store.loadBooks({ onSale: false });
-      store.setSelectedBook('999');
-
-      expect(store.selectedBook()).toBeNull();
-    });
-
-    it('should fallback price and pageCount to 0 if they are null or undefined', () => {
-      const booksWithNullValues = { id: '1', title: 'Book 1', price: null, pageCount: undefined, onSale: false };
-      bookstoreBffService.getBooks.mockReturnValue(of([booksWithNullValues]));
-      const spectator = createService();
-      const store = spectator.service;
-
-      store.loadBooks({ onSale: false });
-      store.setSelectedBook('1');
-
-      expect(store.selectedBook()).toEqual({
-        title: 'Book 1',
-        price: 0,
-        pageCount: 0,
-        onSale: false,
-      });
-    });
   });
 
   describe('should load on sale books', () => {

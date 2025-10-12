@@ -11,8 +11,9 @@ describe('BookEditComponent', () => {
   let spectator: Spectator<BookEditComponent>;
 
   const bookStore = {
-    setSelectedBookId: jest.fn(),
+    setSelectedBook: jest.fn(),
     selectedBook: signal<BookFormData | null>(null),
+    showBook404Error: jest.fn(),
     nagivageToBookList: jest.fn(),
     updateBook: jest.fn(),
   };
@@ -29,13 +30,23 @@ describe('BookEditComponent', () => {
     });
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('Create book dialog', () => {
     describe('selectedBook is null', () => {
       it('should not show a dialog', () => {
         spectator.detectChanges();
         const dialogComponent = spectator.query(BookDialogComponent);
-        expect(bookStore.setSelectedBookId).toHaveBeenCalledWith('1');
+        expect(bookStore.setSelectedBook).toHaveBeenCalledWith('1');
         expect(dialogComponent).not.toBeVisible();
+      });
+
+      it('should show book 404 error', () => {
+        spectator.detectChanges();
+        const erroSpy = jest.spyOn(bookStore, 'showBook404Error');
+        expect(erroSpy).toHaveBeenCalled();
       });
     });
 
@@ -58,7 +69,14 @@ describe('BookEditComponent', () => {
 
       it('should test input data', () => {
         expect(dialogComponent).toBeTruthy();
+        expect(dialogComponent?.bookAction).toEqual('Edit');
         expect(dialogComponent?.bookData).toEqual(bookData);
+      });
+
+      it('should not show book 404 error', () => {
+        spectator.detectChanges();
+        const erroSpy = jest.spyOn(bookStore, 'showBook404Error');
+        expect(erroSpy).not.toHaveBeenCalled();
       });
 
       it('should test on dialogSubmit', () => {

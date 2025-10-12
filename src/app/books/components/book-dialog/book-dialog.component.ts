@@ -42,8 +42,6 @@ export class BookDialogComponent implements AfterViewInit {
         return BookFormComponent;
       case 'View':
         return BookDetailsComponent;
-      default:
-        throw new Error(`Unknown action: ${bookAction}`);
     }
   }
 

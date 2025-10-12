@@ -4,9 +4,9 @@
     <mat-card-title data-testid="card-title">Books</mat-card-title>
   </mat-card-header>
   @if (loadingData) {
-  <mat-progress-bar style="margin: 10px 0" mode="indeterminate"></mat-progress-bar>
+    <mat-progress-bar style="margin: 10px 0" mode="indeterminate"></mat-progress-bar>
   } @else {
-  <mat-divider></mat-divider>
+    <mat-divider></mat-divider>
   }
   <mat-card-content class="spaced-content">
     <div class="panel">
@@ -55,7 +55,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
       <tr
         mat-row
-        (click)="onBookClick(row)"
+        (click)="onViewDetails(row)"
         *matRowDef="let row; columns: displayedColumns()"
         data-testid="book-item"
       ></tr>
@@ -68,5 +68,5 @@
   </mat-card-content>
 </mat-card>
 @if (!loadingData) {
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 }
