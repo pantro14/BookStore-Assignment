@@ -37,10 +37,10 @@ describe('BookDetailsComponent', () => {
   });
 
   it('should check book details displayed', () => {
-    expect(spectator.query(byTestId('book-title'))).toHaveText('The lord of the rings');
-    expect(spectator.query(byTestId('book-on-sale'))).toHaveText('On Sale: Yes');
-    expect(spectator.query(byTestId('book-page-size'))).toHaveText(`Page size: 1200`);
-    expect(spectator.query(byTestId('book-price'))).toContainText('Price: 200,00 kr.');
+    expect(spectator.query(byTestId('title-details'))).toHaveText('The lord of the rings');
+    expect(spectator.query(byTestId('on-sale-details'))).toHaveText('On Sale: Yes');
+    expect(spectator.query(byTestId('page-count-details'))).toHaveText(`Page size: 1200`);
+    expect(spectator.query(byTestId('price-details'))).toContainText('Price: 200,00 kr.');
   });
 
   it('should test cancel button', () => {
