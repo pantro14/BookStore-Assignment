@@ -7,6 +7,7 @@ import {
   EntityId,
   prependEntity,
   removeAllEntities,
+  removeEntity,
   updateEntity,
   withEntities,
 } from '@ngrx/signals/entities';
@@ -132,6 +133,31 @@ export const BookStore = signalStore(
               })
             );
           }),
+          tap(() => router.navigate(['/books']))
+        )
+      ),
+      deleteBook: rxMethod<{ bookId: string; bookTitle: string }>(
+        pipe(
+          switchMap(({ bookId, bookTitle }) =>
+            bookstoreBffService.deleteBook({ bookId }).pipe(
+              tap(() => {
+                patchState(store, removeEntity(bookId));
+                snackBar.open(`Book "${bookTitle}" deleted successfully!`, 'Close', {
+                  duration: 3000,
+                  verticalPosition: 'top',
+                  panelClass: 'snackbar-success',
+                });
+              }),
+              catchError(() => {
+                snackBar.open(`Book could not be deleted`, 'Close', {
+                  duration: 3000,
+                  verticalPosition: 'top',
+                  panelClass: 'snackbar-error',
+                });
+                return EMPTY;
+              })
+            )
+          ),
           tap(() => router.navigate(['/books']))
         )
       ),

@@ -2,6 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, input, outpu
 import { MatDialog } from '@angular/material/dialog';
 import { BookAction, BookFormData, BookFormValue } from '@app/books/interfaces';
 
+import { BookDeleteConfirmComponent } from '../book-delete-confirm/book-delete-confirm.component';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 import { BookFormComponent } from '../book-form/book-form.component';
 
@@ -24,11 +25,12 @@ export class BookDialogComponent implements AfterViewInit {
 
   openDialog(): void {
     let component = this.getComponent(this.bookAction());
+    const bookData = this.bookData();
     this.dialog.open(component, {
       width: '450px',
       disableClose: true,
       data: {
-        bookFormData: this.bookData(),
+        ...(bookData ? { bookFormData: bookData } : {}),
         onSubmit: this.onSubmit.bind(this),
         onClose: this.onClose.bind(this),
       },
@@ -40,6 +42,8 @@ export class BookDialogComponent implements AfterViewInit {
       case 'Create':
       case 'Edit':
         return BookFormComponent;
+      case 'Delete':
+        return BookDeleteConfirmComponent;
       case 'View':
         return BookDetailsComponent;
     }
