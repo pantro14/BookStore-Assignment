@@ -1,4 +1,4 @@
-<div mat-dialog-content>
+<div>
   <mat-card>
     <form [formGroup]="bookForm" class="book-form-flex" novalidate (ngSubmit)="onSubmit()" data-testid="book-form">
       <mat-card-title>Add Book Details</mat-card-title>
@@ -7,21 +7,25 @@
           <mat-form-field appearance="outline" class="flex-item">
             <mat-label>Title</mat-label>
             <input matInput formControlName="title" autocomplete="off" data-testid="title-input" />
-            @if (title?.touched && title?.invalid) { @if (title?.errors?.required) {
-            <mat-error>Title is required.</mat-error>
-            } @else if (title?.errors?.pattern) {
-            <mat-error>Title contains invalid characters.</mat-error>
-            } }
+            @if (title?.touched && title?.invalid) {
+              @if (title?.errors?.required) {
+                <mat-error>Title is required.</mat-error>
+              } @else if (title?.errors?.pattern) {
+                <mat-error>Title contains invalid characters.</mat-error>
+              }
+            }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="flex-item">
             <mat-label>Price</mat-label>
             <input matInput type="number" formControlName="price" data-testid="price-input" />
-            @if (price?.touched && price?.invalid) { @if (price?.errors?.required) {
-            <mat-error>Price is required.</mat-error>
-            } @else if (price?.errors?.min) {
-            <mat-error>Price must be at least 0.01.</mat-error>
-            } }
+            @if (price?.touched && price?.invalid) {
+              @if (price?.errors?.required) {
+                <mat-error>Price is required.</mat-error>
+              } @else if (price?.errors?.min) {
+                <mat-error>Price must be at least 0.01.</mat-error>
+              }
+            }
           </mat-form-field>
         </div>
 
@@ -29,13 +33,15 @@
           <mat-form-field appearance="outline" class="flex-item">
             <mat-label>Page Count</mat-label>
             <input matInput type="number" formControlName="pageCount" data-testid="page-count-input" />
-            @if (pageCount?.touched && pageCount?.invalid) { @if (pageCount?.errors?.required) {
-            <mat-error>Page count is required.</mat-error>
-            } @else if (pageCount?.errors?.min) {
-            <mat-error>Page count must be at least 1.</mat-error>
-            } @else if (pageCount?.errors?.pattern) {
-            <mat-error>Page count must be a whole number.</mat-error>
-            } }
+            @if (pageCount?.touched && pageCount?.invalid) {
+              @if (pageCount?.errors?.required) {
+                <mat-error>Page count is required.</mat-error>
+              } @else if (pageCount?.errors?.min) {
+                <mat-error>Page count must be at least 1.</mat-error>
+              } @else if (pageCount?.errors?.pattern) {
+                <mat-error>Page count must be a whole number.</mat-error>
+              }
+            }
           </mat-form-field>
 
           <mat-checkbox formControlName="onSale" class="flex-item" data-testid="on-sale-checkbox">On Sale</mat-checkbox>
