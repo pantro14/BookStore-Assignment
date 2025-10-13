@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, model, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
-import { BookDialogData } from '@app/books/interfaces';
+import { BookFormValue } from '@app/books/interfaces';
 
 @Component({
   selector: 'mxs-book-delete-confirm',
@@ -13,13 +12,7 @@ import { BookDialogData } from '@app/books/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDeleteConfirmComponent {
-  readonly data = inject<BookDialogData>(MAT_DIALOG_DATA);
-
-  onDelete() {
-    this.data.onSubmit();
-  }
-
-  onCancel() {
-    this.data.onClose();
-  }
+  readonly bookFormData = model.required<BookFormValue>();
+  readonly submitDelete = output<void>();
+  readonly closeDelete = output<void>();
 }

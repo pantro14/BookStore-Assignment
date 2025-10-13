@@ -1,10 +1,9 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, model, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
-import { BookDialogData } from '@app/books/interfaces';
+import { BookFormValue } from '@app/books/interfaces';
 
 @Component({
   selector: 'mxs-book-details',
@@ -13,9 +12,6 @@ import { BookDialogData } from '@app/books/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDetailsComponent {
-  readonly data = inject<BookDialogData>(MAT_DIALOG_DATA);
-
-  onCancel() {
-    this.data.onClose();
-  }
+  readonly bookFormData = model.required<BookFormValue>();
+  readonly closeDetails = output<void>();
 }
