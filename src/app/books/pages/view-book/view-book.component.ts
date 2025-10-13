@@ -1,30 +1,25 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
-import { BookAction, BookFormData } from '@app/books/interfaces';
+import { BookDialogComponent } from '@app/books/components/book-dialog/book-dialog.component';
+import { BookAction } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 
-import { BookDialogComponent } from '../../components/book-dialog/book-dialog.component';
-
 @Component({
-  selector: 'mxs-book-edit',
+  selector: 'mxs-view-book',
   imports: [BookDialogComponent],
   template: `
     @let bookDataValue = bookData();
-    @if (bookDataValue) {
-      <mxs-book-dialog
-        [bookAction]="BookAction"
-        [bookData]="bookDataValue"
-        (dialogSubmit)="onSubmit($event)"
-        (dialogClose)="onClose()"
-      ></mxs-book-dialog>
+    @if (bookDataValue !== null) {
+      <mxs-book-dialog [bookAction]="BookAction" [bookData]="bookDataValue" (dialogClose)="onClose()"></mxs-book-dialog>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookEditComponent {
+export class ViewBookComponent {
   protected readonly bookStore = inject(BookStore);
+  protected readonly BookAction: BookAction = 'View';
+
   readonly bookId = input.required<string>();
   protected readonly bookData = computed(() => this.bookStore.selectedBook());
-  protected readonly BookAction: BookAction = 'Edit';
 
   constructor() {
     effect(() => {
@@ -37,10 +32,6 @@ export class BookEditComponent {
         this.bookStore.showBook404Error();
       }
     });
-  }
-
-  onSubmit(bookFormData: BookFormData): void {
-    this.bookStore.updateBook({ bookId: this.bookId().toString(), bookFormData });
   }
 
   onClose(): void {

@@ -8,7 +8,7 @@ test.describe('Happy flow: book creation and edition at once', () => {
     await mockApiResponse({ page, url: '**/*/v1/books?onSale=false', data: bookListData });
   });
 
-  test('should add a book and edited', async ({ page }) => {
+  test('should create, view, edit and delete a book', async ({ page }) => {
     await page.goto('/');
 
     const addBookButton = page.getByTestId('new-book-button');
@@ -32,9 +32,16 @@ test.describe('Happy flow: book creation and edition at once', () => {
     await nextPageButton.click();
 
     const bookTable = page.getByTestId('books-table');
+    const bookName = bookTable.getByText('The lord of the rings');
 
-    await expect(bookTable.getByText('The lord of the rings')).toBeVisible();
+    await expect(bookName).toBeVisible();
     await expect(bookTable.getByText('100,99 kr.')).toBeVisible();
+
+    await bookName.click();
+    await expect(page.getByTestId('book-details')).toBeVisible();
+    const cancelView = page.getByTestId('cancel-button');
+    await expect(cancelView).toBeVisible();
+    await cancelView.click();
 
     const editButton = bookTable.getByTitle('Edit Book').nth(9);
     await editButton.click();

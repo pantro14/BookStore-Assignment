@@ -5,21 +5,20 @@ import { BookStore } from '@app/books/stores/book-store';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 import { MockComponent } from 'ng-mocks';
 
-import { BookEditComponent } from './book-edit.component';
+import { ViewBookComponent } from './view-book.component';
 
-describe('BookEditComponent', () => {
-  let spectator: Spectator<BookEditComponent>;
+describe('ViewBookComponent', () => {
+  let spectator: Spectator<ViewBookComponent>;
 
   const bookStore = {
     setSelectedBook: jest.fn(),
     selectedBook: signal<BookFormData | null>(null),
     showBook404Error: jest.fn(),
     nagivageToBookList: jest.fn(),
-    updateBook: jest.fn(),
   };
 
   const createComponent = createComponentFactory({
-    component: BookEditComponent,
+    component: ViewBookComponent,
     declarations: [MockComponent(BookDialogComponent)],
     providers: [{ provide: BookStore, useValue: bookStore }],
   });
@@ -69,7 +68,7 @@ describe('BookEditComponent', () => {
 
       it('should test input data', () => {
         expect(dialogComponent).toBeTruthy();
-        expect(dialogComponent?.bookAction).toEqual('Edit');
+        expect(dialogComponent?.bookAction).toEqual('View');
         expect(dialogComponent?.bookData).toEqual(bookData);
       });
 
@@ -77,17 +76,6 @@ describe('BookEditComponent', () => {
         spectator.detectChanges();
         const erroSpy = jest.spyOn(bookStore, 'showBook404Error');
         expect(erroSpy).not.toHaveBeenCalled();
-      });
-
-      it('should test on dialogSubmit', () => {
-        const bookData = {
-          title: 'Test Book',
-          price: 20,
-          pageCount: 200,
-          onSale: true,
-        };
-        dialogComponent?.dialogSubmit.emit(bookData);
-        expect(bookStore.updateBook).toHaveBeenCalledWith({ bookId: '1', bookFormData: bookData });
       });
 
       it('should test on dialogClose', () => {

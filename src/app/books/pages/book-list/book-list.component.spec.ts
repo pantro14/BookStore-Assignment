@@ -14,6 +14,7 @@ describe('BookListComponent', () => {
   let spectator: Spectator<BookListComponent>;
 
   const bookStore = {
+    loading: signal(false),
     loadBooks: jest.fn(),
     bookList: signal<BookDTO[]>([
       { id: '1', title: 'Book 1', onSale: true, pageCount: 412, price: 79 },
@@ -103,6 +104,16 @@ describe('BookListComponent', () => {
 
       spectator.click(deleteButton);
       expect(navigateSpy).toHaveBeenCalledWith(['/books/delete/1']);
+    });
+
+    it('should check view details button', () => {
+      const tableRows = spectator.queryAll('.mat-mdc-row') as Element[];
+      const router = spectator.inject(Router);
+      const navigateSpy = jest.spyOn(router, 'navigate');
+
+      spectator.click(tableRows[0]);
+
+      expect(navigateSpy).toHaveBeenCalledWith(['/books/view/1']);
     });
   });
 

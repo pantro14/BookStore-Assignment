@@ -10,3 +10,29 @@ html {
     )
   );
 }
+
+mat-card {
+  padding: 24px 16px;
+}
+
+mat-card-title {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+mat-card-actions {
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+}
+
+.mat-mdc-snack-bar-container {
+  &.snackbar-error {
+    --mdc-snackbar-container-color: #1c9ce7;
+    --mdc-snackbar-supporting-text-color: white !important;
+  }
+
+  &.snackbar-success {
+    --mdc-snackbar-container-color: var(--mat-sys-primary);
+  }
+}

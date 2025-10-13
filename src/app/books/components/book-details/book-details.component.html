@@ -1,0 +1,23 @@
+<div data-testid="book-details">
+  <mat-card>
+    @let bookDetails = data.bookFormData;
+    <mat-card-title data-testid="title-details">{{ bookDetails.title }}</mat-card-title>
+    <mat-card-content>
+      <mat-list role="list">
+        <mat-list-item role="listitem" data-testid="on-sale-details"
+          >On Sale: <strong>{{ bookDetails.onSale ? 'Yes' : 'No' }}</strong></mat-list-item
+        >
+        <mat-list-item role="listitem" data-testid="page-count-details"
+          >Page size: <strong>{{ bookDetails.pageCount }}</strong></mat-list-item
+        >
+        <mat-list-item role="listitem" data-testid="price-details"
+          >Price:
+          <strong>{{ bookDetails.price | currency: 'DKK' : 'symbol' : '1.2-2' : 'da-DK' }}</strong></mat-list-item
+        >
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-flat-button type="button" (click)="onCancel()" data-testid="cancel-button">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

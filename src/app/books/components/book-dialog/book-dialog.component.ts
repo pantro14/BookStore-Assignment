@@ -1,7 +1,8 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BookDialogData, BookFormData, BookFormValue } from '@app/books/interfaces';
+import { BookAction, BookFormData, BookFormValue } from '@app/books/interfaces';
 
+import { BookDetailsComponent } from '../book-details/book-details.component';
 import { BookFormComponent } from '../book-form/book-form.component';
 
 @Component({
@@ -12,7 +13,8 @@ import { BookFormComponent } from '../book-form/book-form.component';
 export class BookDialogComponent implements AfterViewInit {
   private readonly dialog = inject(MatDialog);
 
-  readonly bookData = input.required<BookFormValue>();
+  readonly bookAction = input.required<BookAction>();
+  readonly bookData = input<BookFormValue>();
   readonly dialogSubmit = output<BookFormData>();
   readonly dialogClose = output<void>();
 
@@ -21,7 +23,8 @@ export class BookDialogComponent implements AfterViewInit {
   }
 
   openDialog(): void {
-    this.dialog.open<BookFormComponent, BookDialogData>(BookFormComponent, {
+    let component = this.getComponent(this.bookAction());
+    this.dialog.open(component, {
       width: '450px',
       disableClose: true,
       data: {
@@ -30,6 +33,16 @@ export class BookDialogComponent implements AfterViewInit {
         onClose: this.onClose.bind(this),
       },
     });
+  }
+
+  private getComponent(bookAction: BookAction) {
+    switch (bookAction) {
+      case 'Create':
+      case 'Edit':
+        return BookFormComponent;
+      case 'View':
+        return BookDetailsComponent;
+    }
   }
 
   onSubmit(data: BookFormData) {
