@@ -180,6 +180,9 @@ components:
         title:
           description: Title
           type: string
+        author:
+          description: Author of the book
+          type: string
         price:
           format: double
           description: Price for this book
@@ -200,6 +203,7 @@ components:
       example:
         id: 14
         title: Lord of the Flies
+        author: William Golding
         price: 60.55
         onSale: true
         pageCount: 224
@@ -216,6 +220,9 @@ components:
         title:
           description: Title of the book
           type: string
+        author:
+          description: Author of the book
+          type: string
         onSale:
           description: Is this book on sale
           type: boolean
@@ -228,6 +235,7 @@ components:
           type: number
       example:
         title: Lord of the Flies
+        author: William Golding
         onSale: true
         pageCount: 224
         price: 60.55
@@ -235,14 +243,17 @@ components:
       description: Fields needed for updating a book
       required:
         - lastUpdated
-        - onSale
         - title
+        - onSale
         - pageCount
         - price
       type: object
       properties:
         title:
           description: Title of the book
+          type: string
+        author:
+          description: Author of the book
           type: string
         lastUpdated:
           format: int64
@@ -260,6 +271,7 @@ components:
           type: number
       example:
         title: Lord of the Flies
+        author: William Golding
         lastUpdated: 1601901810913
         onSale: true
         pageCount: 224

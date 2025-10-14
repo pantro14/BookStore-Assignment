@@ -1,14 +1,8 @@
 import { FormControl } from '@angular/forms';
 import { BookDTO } from '@openapi';
 
-export type BookFormData = Required<Omit<BookDTO, 'id' | 'lastUpdated' | 'lastUpdatedBy'>>;
-export type BookAction = 'Create' | 'Edit' | 'View' | 'Delete';
-
-export type BookDialogData = {
-  bookFormData: BookFormValue;
-  onSubmit: (data?: BookFormData) => void;
-  onClose: () => void;
-};
+export type BookFormData = Required<Omit<BookDTO, 'id' | 'lastUpdated' | 'lastUpdatedBy' | 'author'>>;
+export type BookDetails = BookFormData & Pick<BookDTO, 'author' | 'lastUpdatedBy'>;
 
 export type BookFormType = {
   [K in keyof BookFormData]: FormControl<BookFormData[K] | null>;

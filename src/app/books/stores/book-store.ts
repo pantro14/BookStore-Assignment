@@ -15,12 +15,12 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { BookCreateDTO, BookDTO, BookstoreBffService, BookUpdateDTO } from '@openapi';
 import { catchError, EMPTY, pipe, switchMap, take, tap } from 'rxjs';
 
-import { BookFormData } from '../interfaces';
+import { BookDetails, BookFormData } from '../interfaces';
 
 type BookStoreState = {
   loading: boolean;
   error: string | null;
-  selectedBook: BookFormData | null;
+  selectedBook: BookDetails | null;
 };
 
 export const BookStore = signalStore(
@@ -59,13 +59,15 @@ export const BookStore = signalStore(
           patchState(store, { selectedBook: null });
           return;
         }
-        const { title, price, pageCount, onSale } = selectedBook;
+        const { title, price, pageCount, onSale, author, lastUpdatedBy } = selectedBook;
         patchState(store, {
           selectedBook: {
             title,
             price: price!,
             pageCount: pageCount!,
             onSale: onSale!,
+            author: author!,
+            lastUpdatedBy: lastUpdatedBy!,
           },
         });
       },
