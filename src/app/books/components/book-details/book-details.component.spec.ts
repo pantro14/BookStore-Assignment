@@ -14,6 +14,8 @@ describe('BookDetailsComponent', () => {
     price: 200,
     pageCount: 1200,
     onSale: true,
+    author: 'J.R.R. Tolkien',
+    lastUpdatedBy: 'admin',
   };
 
   const createComponent = createComponentFactory({
@@ -33,6 +35,8 @@ describe('BookDetailsComponent', () => {
     expect(spectator.query(byTestId('on-sale-details'))).toHaveText('On Sale: Yes');
     expect(spectator.query(byTestId('page-count-details'))).toHaveText(`Page size: 1200`);
     expect(spectator.query(byTestId('price-details'))).toContainText('Price: 200,00 kr.');
+    expect(spectator.query(byTestId('author-details'))).toHaveText('Author: J.R.R. Tolkien');
+    expect(spectator.query(byTestId('last-updated-by'))).toHaveText('Last updated by: admin');
   });
 
   it('should test cancel button', () => {

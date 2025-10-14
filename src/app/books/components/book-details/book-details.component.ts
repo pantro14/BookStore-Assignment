@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, model, output } from '@angular/core
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import { BookFormValue } from '@app/books/interfaces';
+import { BookDetails } from '@app/books/interfaces';
 
 @Component({
   selector: 'mxs-book-details',
@@ -12,6 +12,6 @@ import { BookFormValue } from '@app/books/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDetailsComponent {
-  readonly bookDetails = model.required<BookFormValue>();
+  readonly bookDetails = model.required<BookDetails>();
   readonly closeDetails = output<void>();
 }

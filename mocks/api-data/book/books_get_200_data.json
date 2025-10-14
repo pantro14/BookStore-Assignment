@@ -6,7 +6,8 @@
     "onSale": true,
     "pageCount": "412",
     "price": "79",
-    "title": "The Forgotten Echo"
+    "title": "The Forgotten Echo",
+    "author": "John Doe 1"
   },
   {
     "id": "xyxqwe1-98765432-123456",
@@ -15,7 +16,8 @@
     "onSale": false,
     "pageCount": "287",
     "price": "42",
-    "title": "Whispering Shadows"
+    "title": "Whispering Shadows",
+    "author": "John Doe 2"
   },
   {
     "id": "xyxqwe1-56789012-098765",
@@ -24,7 +26,8 @@
     "onSale": true,
     "pageCount": "356",
     "price": "65",
-    "title": "The Enigma Key"
+    "title": "The Enigma Key",
+    "author": "John Doe 3"
   },
   {
     "id": "xyxqwe1-34567890-987654",
@@ -33,7 +36,8 @@
     "onSale": true,
     "pageCount": "512",
     "price": "89",
-    "title": "Silent Whispers"
+    "title": "Silent Whispers",
+    "author": "John Doe 4"
   },
   {
     "id": "xyxqwe1-87654321-210987",
@@ -42,7 +46,8 @@
     "onSale": false,
     "pageCount": "241",
     "price": "52",
-    "title": "Crimson Tides"
+    "title": "Crimson Tides",
+    "author": "John Doe 5"
   },
   {
     "id": "xyxqwe1-45678901-789012",
@@ -51,7 +56,8 @@
     "onSale": true,
     "pageCount": "385",
     "price": "73",
-    "title": "Eternal Nightfall"
+    "title": "Eternal Nightfall",
+    "author": "John Doe 6"
   },
   {
     "id": "xyxqwe1-09876543-210987",
@@ -60,7 +66,8 @@
     "onSale": true,
     "pageCount": "299",
     "price": "49",
-    "title": "Whispers of Destiny"
+    "title": "Whispers of Destiny",
+    "author": "John Doe 7"
   },
   {
     "id": "xyxqwe1-67890123-987654",
@@ -69,7 +76,8 @@
     "onSale": false,
     "pageCount": "432",
     "price": "68",
-    "title": "The Silent Witness"
+    "title": "The Silent Witness",
+    "author": "John Doe 8"
   },
   {
     "id": "xyxqwe1-32109876-876543",
@@ -78,7 +86,8 @@
     "onSale": true,
     "pageCount": "317",
     "price": "54",
-    "title": "Secrets Unveiled"
+    "title": "Secrets Unveiled",
+    "author": "John Doe 9"
   },
   {
     "id": "xyxqwe1-76543210-123456",
@@ -87,7 +96,8 @@
     "onSale": true,
     "pageCount": "278",
     "price": "47",
-    "title": "Midnight Whispers"
+    "title": "Midnight Whispers",
+    "author": "John Doe 10"
   },
   {
     "id": "xyxqwe1-23456789-098765",
@@ -96,7 +106,8 @@
     "onSale": false,
     "pageCount": "421",
     "price": "82",
-    "title": "Echoes of the Past"
+    "title": "Echoes of the Past",
+    "author": "John Doe 11"
   },
   {
     "id": "xyxqwe1-98765432-345678",
@@ -105,7 +116,8 @@
     "onSale": true,
     "pageCount": "367",
     "price": "61",
-    "title": "Whispering Secrets"
+    "title": "Whispering Secrets",
+    "author": "John Doe 12"
   },
   {
     "id": "xyxqwe1-56789012-210987",
@@ -114,7 +126,8 @@
     "onSale": true,
     "pageCount": "306",
     "price": "57",
-    "title": "The Vanishing Shadows"
+    "title": "The Vanishing Shadows",
+    "author": "John Doe 13"
   },
   {
     "id": "xyxqwe1-34567890-876543",
@@ -123,7 +136,8 @@
     "onSale": false,
     "pageCount": "399",
     "price": "75",
-    "title": "The Hidden Key"
+    "title": "The Hidden Key",
+    "author": "John Doe 14"
   },
   {
     "id": "xyxqwe1-87654321-098765",
@@ -132,7 +146,8 @@
     "onSale": true,
     "pageCount": "278",
     "price": "48",
-    "title": "Whispers in the Dark"
+    "title": "Whispers in the Dark",
+    "author": "John Doe 15"
   },
   {
     "id": "xyxqwe1-45678901-987654",
@@ -141,7 +156,8 @@
     "onSale": true,
     "pageCount": "342",
     "price": "69",
-    "title": "The Enchanted Whisper"
+    "title": "The Enchanted Whisper",
+    "author": "John Doe 16"
   },
   {
     "id": "xyxqwe1-09876543-654321",
@@ -150,7 +166,8 @@
     "onSale": false,
     "pageCount": "235",
     "price": "53",
-    "title": "Silent Shadows"
+    "title": "Silent Shadows",
+    "author": "John Doe 17"
   },
   {
     "id": "xyxqwe1-67890123-321098",
@@ -159,7 +176,8 @@
     "onSale": true,
     "pageCount": "416",
     "price": "77",
-    "title": "The Whispering Rose"
+    "title": "The Whispering Rose",
+    "author": "John Doe 18"
   },
   {
     "id": "xyxqwe1-32109876-765432",
@@ -168,6 +186,7 @@
     "onSale": true,
     "pageCount": "299",
     "price": "55",
-    "title": "The Secret Scroll"
+    "title": "The Secret Scroll",
+    "author": "John Doe 19"
   }
 ]
