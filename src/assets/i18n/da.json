@@ -40,6 +40,16 @@
     "delete": {
       "warning": "Er du sikker på, at du vil slette denne bog?",
       "confirm": "Slet"
+    },
+    "snackbar": {
+      "notFound": "Bogen blev ikke fundet",
+      "added": "Bogen \"{{title}}\" blev tilføjet med succes!",
+      "addError": "Bogen kunne ikke oprettes",
+      "updated": "Bogen \"{{title}}\" blev redigeret med succes!",
+      "updateError": "Bogen kunne ikke redigeres",
+      "deleted": "Bogen \"{{title}}\" blev slettet med succes!",
+      "deleteError": "Bogen kunne ikke slettes",
+      "close": "Luk"
     }
   }
 }

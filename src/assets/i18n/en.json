@@ -40,6 +40,16 @@
     "delete": {
       "warning": "Are you sure you want to delete this book?",
       "confirm": "Delete"
+    },
+    "snackbar": {
+      "notFound": "The Book was not found",
+      "added": "Book \"{{title}}\" added successfully!",
+      "addError": "Book could not be created",
+      "updated": "Book \"{{title}}\" edited successfully!",
+      "updateError": "Book could not be edited",
+      "deleted": "Book \"{{title}}\" deleted successfully!",
+      "deleteError": "Book could not be deleted",
+      "close": "Close"
     }
   }
 }

@@ -1,9 +1,11 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { createServiceFactory } from '@ngneat/spectator/jest';
+import { TranslateService } from '@ngx-translate/core';
 import { BookstoreBffService } from '@openapi';
 import { EMPTY, of, throwError } from 'rxjs';
 
+import { translateServiceMock } from '../utils/translate-service.mock';
 import { BookStore } from './book-store';
 
 describe('BookStore', () => {
@@ -40,6 +42,7 @@ describe('BookStore', () => {
           open: jest.fn(),
         },
       },
+      { provide: TranslateService, useValue: translateServiceMock },
     ],
   });
 
@@ -67,7 +70,7 @@ describe('BookStore', () => {
 
       store.showBook404Error();
 
-      expect(openSpy).toHaveBeenCalledWith('The Book was not found', 'Close', {
+      expect(openSpy).toHaveBeenCalledWith('books.snackbar.notFound', 'books.snackbar.close', {
         duration: 5000,
         verticalPosition: 'top',
         panelClass: 'snackbar-error',
@@ -125,12 +128,12 @@ describe('BookStore', () => {
       const store = spectator.service;
 
       const snackbar = spectator.inject(MatSnackBar);
-      const navigateSpy = jest.spyOn(snackbar, 'open');
+      const openSpy = jest.spyOn(snackbar, 'open');
 
       store.addBook(newBook);
 
       expect(store.bookList()).toEqual([createdBook]);
-      expect(navigateSpy).toHaveBeenCalledWith('Book "New Book" added successfully!', 'Close', {
+      expect(openSpy).toHaveBeenCalledWith('books.snackbar.added', 'books.snackbar.close', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'snackbar-success',
@@ -144,12 +147,12 @@ describe('BookStore', () => {
       const store = spectator.service;
 
       const snackbar = spectator.inject(MatSnackBar);
-      const navigateSpy = jest.spyOn(snackbar, 'open');
+      const openSpy = jest.spyOn(snackbar, 'open');
 
       store.addBook(newBook);
 
       expect(store.bookList()).toEqual([]);
-      expect(navigateSpy).toHaveBeenCalledWith('Book could not be created', 'Close', {
+      expect(openSpy).toHaveBeenCalledWith('books.snackbar.addError', 'books.snackbar.close', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'snackbar-error',
@@ -173,13 +176,12 @@ describe('BookStore', () => {
       const store = spectator.service;
 
       const snackbar = spectator.inject(MatSnackBar);
-      const navigateSpy = jest.spyOn(snackbar, 'open');
+      const openSpy = jest.spyOn(snackbar, 'open');
 
-      store.loadBooks({ onSale: false });
       store.updateBook({ bookId: '1', bookFormData: updatedBook });
 
       expect(store.bookList()).toEqual([updatedBook]);
-      expect(navigateSpy).toHaveBeenCalledWith('Book "Updated Book 1" edited successfully!', 'Close', {
+      expect(openSpy).toHaveBeenCalledWith('books.snackbar.updated', 'books.snackbar.close', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'snackbar-success',
@@ -193,13 +195,12 @@ describe('BookStore', () => {
       const store = spectator.service;
 
       const snackbar = spectator.inject(MatSnackBar);
-      const navigateSpy = jest.spyOn(snackbar, 'open');
+      const openSpy = jest.spyOn(snackbar, 'open');
 
-      store.loadBooks({ onSale: false });
       store.updateBook({ bookId: '1', bookFormData: updatedBook });
 
       expect(store.bookList()).toEqual([existingBook]);
-      expect(navigateSpy).toHaveBeenCalledWith('Book could not be edited', 'Close', {
+      expect(openSpy).toHaveBeenCalledWith('books.snackbar.updateError', 'books.snackbar.close', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'snackbar-error',
@@ -222,33 +223,31 @@ describe('BookStore', () => {
       const store = spectator.service;
 
       const snackbar = spectator.inject(MatSnackBar);
-      const navigateSpy = jest.spyOn(snackbar, 'open');
+      const openSpy = jest.spyOn(snackbar, 'open');
 
-      store.loadBooks({ onSale: false });
       store.deleteBook({ bookId: '1', bookTitle: existingBook.title });
 
       expect(store.bookList()).toEqual([]);
-      expect(navigateSpy).toHaveBeenCalledWith('Book "Book 1" deleted successfully!', 'Close', {
+      expect(openSpy).toHaveBeenCalledWith('books.snackbar.deleted', 'books.snackbar.close', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'snackbar-success',
       });
     });
 
-    it('should handle error when updating a book fails', () => {
-      bookstoreBffService.deleteBook.mockReturnValue(throwError(() => new Error('Update failed')));
+    it('should handle error when deleting a book fails', () => {
+      bookstoreBffService.deleteBook.mockReturnValue(throwError(() => new Error('Delete failed')));
 
       const spectator = createService();
       const store = spectator.service;
 
       const snackbar = spectator.inject(MatSnackBar);
-      const navigateSpy = jest.spyOn(snackbar, 'open');
+      const openSpy = jest.spyOn(snackbar, 'open');
 
-      store.loadBooks({ onSale: false });
       store.deleteBook({ bookId: '1', bookTitle: existingBook.title });
 
       expect(store.bookList()).toEqual([existingBook]);
-      expect(navigateSpy).toHaveBeenCalledWith('Book could not be deleted', 'Close', {
+      expect(openSpy).toHaveBeenCalledWith('books.snackbar.deleteError', 'books.snackbar.close', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'snackbar-error',

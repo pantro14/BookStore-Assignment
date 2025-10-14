@@ -1,6 +1,8 @@
 import { registerLocaleData } from '@angular/common';
 import localeDa from '@angular/common/locales/da';
+import { translateServiceMock } from '@app/books/utils/translate-service.mock';
 import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
+import { TranslateService } from '@ngx-translate/core';
 
 import { BookDetailsComponent } from './book-details.component';
 
@@ -20,6 +22,7 @@ describe('BookDetailsComponent', () => {
 
   const createComponent = createComponentFactory({
     component: BookDetailsComponent,
+    providers: [{ provide: TranslateService, useValue: translateServiceMock }],
   });
 
   beforeEach(() => {
@@ -32,11 +35,11 @@ describe('BookDetailsComponent', () => {
 
   it('should check book details displayed', () => {
     expect(spectator.query(byTestId('title-details'))).toHaveText('The lord of the rings');
-    expect(spectator.query(byTestId('on-sale-details'))).toHaveText('On Sale: Yes');
-    expect(spectator.query(byTestId('page-count-details'))).toHaveText(`Page size: 1200`);
-    expect(spectator.query(byTestId('price-details'))).toContainText('Price: 200,00 kr.');
-    expect(spectator.query(byTestId('author-details'))).toHaveText('Author: J.R.R. Tolkien');
-    expect(spectator.query(byTestId('last-updated-by'))).toHaveText('Last updated by: admin');
+    expect(spectator.query(byTestId('on-sale-details'))).toHaveText('books.global.onSale: Yes');
+    expect(spectator.query(byTestId('page-count-details'))).toHaveText('books.global.pageCount: 1200');
+    expect(spectator.query(byTestId('price-details'))).toContainText('books.global.price: 200,00 kr.');
+    expect(spectator.query(byTestId('author-details'))).toHaveText('books.global.author: J.R.R. Tolkien');
+    expect(spectator.query(byTestId('last-updated-by'))).toHaveText('books.global.lastUpdatedBy: admin');
   });
 
   it('should test cancel button', () => {
