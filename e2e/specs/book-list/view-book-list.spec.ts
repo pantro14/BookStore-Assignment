@@ -14,9 +14,9 @@ test.describe('Use Case 1: viewing all books ', () => {
     const bookItems = await page.getByTestId('book-item');
 
     await expect(page).toHaveTitle(/BookStore/);
-    await expect(page.getByTestId('card-title')).toHaveText('Books');
-    await expect(page.getByTestId('new-book-button')).toHaveText('New Book');
-    await expect(page.getByTestId('on-sale-book-toggle')).toHaveText('On Sale');
+    await expect(page.getByTestId('card-title')).toHaveText('Bogliste');
+    await expect(page.getByTestId('new-book-button')).toHaveText('Ny bog');
+    await expect(page.getByTestId('on-sale-book-toggle')).toHaveText('På tilbud');
     await expect(page.getByTestId('books-table')).toBeVisible();
     await expect(page.getByTestId('paginator')).toBeVisible();
     await expect(bookItems).toHaveCount(10);

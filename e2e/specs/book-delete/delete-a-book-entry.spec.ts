@@ -16,7 +16,7 @@ test.describe('Use Case 6: Deleting a book entry', () => {
     await expect(deleteButton).toBeEnabled();
     await deleteButton.click();
 
-    await expect(page.getByText('Book "The Forgotten Echo" deleted successfully!')).toBeVisible();
+    await expect(page.getByText('Bogen "The Forgotten Echo" blev slettet med succes!')).toBeVisible();
 
     const bookTable = page.getByTestId('books-table');
 

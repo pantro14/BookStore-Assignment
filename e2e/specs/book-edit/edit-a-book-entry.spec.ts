@@ -41,7 +41,7 @@ test.describe('Use Case 5: Editing a book entry', () => {
     await expect(submitButton).toBeEnabled();
     await submitButton.click();
 
-    await expect(page.getByText('Book "The Forgotten Echo" edited successfully!')).toBeVisible();
+    await expect(page.getByText('Bogen "The Forgotten Echo" blev redigeret med succes!')).toBeVisible();
 
     const bookTable = page.getByTestId('books-table');
 

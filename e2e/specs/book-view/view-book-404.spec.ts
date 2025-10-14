@@ -11,6 +11,6 @@ test.describe('Edge case: view book not found', () => {
   test('should show book not found snackbar', async ({ page }) => {
     await page.goto('/books/view/no-id');
 
-    await expect(page.getByText('The Book was not found')).toBeVisible();
+    await expect(page.getByText('Bogen blev ikke fundet')).toBeVisible();
   });
 });
