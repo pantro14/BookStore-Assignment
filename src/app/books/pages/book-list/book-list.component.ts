@@ -4,13 +4,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterModule } from '@angular/router';
 import { BookStore } from '@app/books/stores/book-store';
+import { MatPaginatorIntlDa } from '@app/books/utils/mat-paginator-intl-da';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BookDTO } from '@openapi';
 
 @Component({
@@ -28,7 +30,9 @@ import { BookDTO } from '@openapi';
     MatProgressBarModule,
     MatSortModule,
     CurrencyPipe,
+    TranslatePipe,
   ],
+  providers: [{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlDa }],
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

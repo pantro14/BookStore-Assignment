@@ -17,7 +17,7 @@ test.describe('Happy flow: book creation and edition at once', () => {
     const pageCountInput = page.getByTestId('page-count-input');
     const onSaleCheckbox = page.getByTestId('on-sale-checkbox').getByRole('checkbox');
     const submitButton = page.getByTestId('submit-button');
-    const nextPageButton = page.locator('button[aria-label="Next page"]');
+    const nextPageButton = page.locator('button[aria-label="Næste side"]');
 
     await addBookButton.click();
 
@@ -27,7 +27,7 @@ test.describe('Happy flow: book creation and edition at once', () => {
     await onSaleCheckbox.click();
     await submitButton.click();
 
-    await expect(page.getByText('Book "The lord of the rings" added successfully!')).toBeVisible();
+    await expect(page.getByText('Bogen "The lord of the rings" blev tilføjet med succes!')).toBeVisible();
 
     await nextPageButton.click();
 
@@ -54,7 +54,9 @@ test.describe('Happy flow: book creation and edition at once', () => {
     await onSaleCheckbox.click();
     await submitButton.click();
 
-    await expect(page.getByText('Book "The lord of the rings delux edition" edited successfully!')).toBeVisible();
+    await expect(
+      page.getByText('Bogen "The lord of the rings delux edition" blev redigeret med succes!')
+    ).toBeVisible();
 
     const deleteBook = bookTable.getByTitle('Delete Book').nth(9);
     await deleteBook.click();
@@ -64,6 +66,6 @@ test.describe('Happy flow: book creation and edition at once', () => {
     await expect(deleteButton).toBeVisible();
     await deleteButton.click();
 
-    await expect(page.getByText('Book "The lord of the rings delux edition" deleted successfully!')).toBeVisible();
+    await expect(page.getByText('Bogen "The lord of the rings delux edition" blev slettet med succes!')).toBeVisible();
   });
 });

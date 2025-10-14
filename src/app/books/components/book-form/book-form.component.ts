@@ -13,10 +13,19 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { BookFormData, BookFormType, BookFormValue } from '@app/books/interfaces';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'mxs-book-form',
-  imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, MatButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    TranslatePipe,
+  ],
   templateUrl: './book-form.component.html',
   styleUrl: './book-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

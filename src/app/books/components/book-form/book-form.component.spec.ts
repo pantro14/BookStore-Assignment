@@ -1,5 +1,7 @@
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { translateServiceMock } from '@app/books/utils/translate-service.mock';
 import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
+import { TranslateService } from '@ngx-translate/core';
 
 import { BookFormComponent } from './book-form.component';
 
@@ -16,6 +18,7 @@ describe('BookFormComponent', () => {
   const createComponent = createComponentFactory({
     component: BookFormComponent,
     imports: [ReactiveFormsModule],
+    providers: [{ provide: TranslateService, useValue: translateServiceMock }],
   });
 
   beforeEach(() => {

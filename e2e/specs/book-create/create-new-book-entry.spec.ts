@@ -33,9 +33,9 @@ test.describe('Use Case 4: Create a new book entry ', () => {
     await pageCountInput.fill('0');
     await onSaleCheckbox.click();
 
-    await expect(page.getByText('Title is required.')).toBeVisible();
-    await expect(page.getByText('Price must be at least 0.01.')).toBeVisible();
-    await expect(page.getByText('Page count must be at least 1.')).toBeVisible();
+    await expect(page.getByText('Titel er påkrævet.')).toBeVisible();
+    await expect(page.getByText('Prisen skal være mindst 0.01.')).toBeVisible();
+    await expect(page.getByText('Sidetal skal være mindst 1.')).toBeVisible();
     await expect(submitButton).toBeDisabled();
   });
 
@@ -47,7 +47,7 @@ test.describe('Use Case 4: Create a new book entry ', () => {
     const pageCountInput = page.getByTestId('page-count-input');
     const onSaleCheckbox = page.getByTestId('on-sale-checkbox').getByRole('checkbox');
     const submitButton = page.getByTestId('submit-button');
-    const nextPageButton = page.locator('button[aria-label="Next page"]');
+    const nextPageButton = page.locator('button[aria-label="Næste side"]');
 
     await titleInput.fill('The Great Gatsby');
     await priceInput.fill('10.99');
@@ -57,7 +57,7 @@ test.describe('Use Case 4: Create a new book entry ', () => {
     await expect(submitButton).toBeEnabled();
     await submitButton.click();
 
-    await expect(page.getByText('Book "The Great Gatsby" added successfully!')).toBeVisible();
+    await expect(page.getByText('Bogen "The Great Gatsby" blev tilføjet med succes!')).toBeVisible();
 
     await nextPageButton.click();
 

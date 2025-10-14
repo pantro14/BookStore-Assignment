@@ -12,6 +12,7 @@ import {
   withEntities,
 } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { TranslateService } from '@ngx-translate/core';
 import { BookCreateDTO, BookDTO, BookstoreBffService, BookUpdateDTO } from '@openapi';
 import { catchError, EMPTY, pipe, switchMap, take, tap } from 'rxjs';
 
@@ -35,17 +36,22 @@ export const BookStore = signalStore(
       store,
       bookstoreBffService = inject(BookstoreBffService),
       router = inject(Router),
-      snackBar = inject(MatSnackBar)
+      snackBar = inject(MatSnackBar),
+      translate = inject(TranslateService)
     ) => ({
       nagivageToBookList: () => {
         router.navigate(['/books']);
       },
       showBook404Error: () => {
-        const snackbarRef = snackBar.open(`The Book was not found`, 'Close', {
-          duration: 5000,
-          verticalPosition: 'top',
-          panelClass: 'snackbar-error',
-        });
+        const snackbarRef = snackBar.open(
+          translate.instant('books.snackbar.notFound'),
+          translate.instant('books.snackbar.close'),
+          {
+            duration: 5000,
+            verticalPosition: 'top',
+            panelClass: 'snackbar-error',
+          }
+        );
         snackbarRef
           .afterDismissed()
           .pipe(take(1))
@@ -93,14 +99,18 @@ export const BookStore = signalStore(
               tap(book => {
                 const submitData = { ...data, id: book.id } as BookDTO;
                 patchState(store, prependEntity(submitData));
-                snackBar.open(`Book "${data.title}" added successfully!`, 'Close', {
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  panelClass: 'snackbar-success',
-                });
+                snackBar.open(
+                  translate.instant('books.snackbar.added', { title: data.title }),
+                  translate.instant('books.snackbar.close'),
+                  {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    panelClass: 'snackbar-success',
+                  }
+                );
               }),
               catchError(() => {
-                snackBar.open(`Book could not be created`, 'Close', {
+                snackBar.open(translate.instant('books.snackbar.addError'), translate.instant('books.snackbar.close'), {
                   duration: 3000,
                   verticalPosition: 'top',
                   panelClass: 'snackbar-error',
@@ -119,18 +129,26 @@ export const BookStore = signalStore(
             return bookstoreBffService.updateBook({ bookId, bookUpdateDTO }).pipe(
               tap(() => {
                 patchState(store, updateEntity({ id: bookId, changes: { ...bookFormData } }));
-                snackBar.open(`Book "${bookFormData.title}" edited successfully!`, 'Close', {
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  panelClass: 'snackbar-success',
-                });
+                snackBar.open(
+                  translate.instant('books.snackbar.updated', { title: bookFormData.title }),
+                  translate.instant('books.snackbar.close'),
+                  {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    panelClass: 'snackbar-success',
+                  }
+                );
               }),
               catchError(() => {
-                snackBar.open(`Book could not be edited`, 'Close', {
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  panelClass: 'snackbar-error',
-                });
+                snackBar.open(
+                  translate.instant('books.snackbar.updateError'),
+                  translate.instant('books.snackbar.close'),
+                  {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    panelClass: 'snackbar-error',
+                  }
+                );
                 return EMPTY;
               })
             );
@@ -144,18 +162,26 @@ export const BookStore = signalStore(
             bookstoreBffService.deleteBook({ bookId }).pipe(
               tap(() => {
                 patchState(store, removeEntity(bookId));
-                snackBar.open(`Book "${bookTitle}" deleted successfully!`, 'Close', {
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  panelClass: 'snackbar-success',
-                });
+                snackBar.open(
+                  translate.instant('books.snackbar.deleted', { title: bookTitle }),
+                  translate.instant('books.snackbar.close'),
+                  {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    panelClass: 'snackbar-success',
+                  }
+                );
               }),
               catchError(() => {
-                snackBar.open(`Book could not be deleted`, 'Close', {
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  panelClass: 'snackbar-error',
-                });
+                snackBar.open(
+                  translate.instant('books.snackbar.deleteError'),
+                  translate.instant('books.snackbar.close'),
+                  {
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    panelClass: 'snackbar-error',
+                  }
+                );
                 return EMPTY;
               })
             )
