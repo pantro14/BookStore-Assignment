@@ -12,6 +12,6 @@ import { BookFormValue } from '@app/books/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDetailsComponent {
-  readonly bookFormData = model.required<BookFormValue>();
+  readonly bookDetails = model.required<BookFormValue>();
   readonly closeDetails = output<void>();
 }

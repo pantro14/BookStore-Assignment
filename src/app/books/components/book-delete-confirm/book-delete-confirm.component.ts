@@ -12,7 +12,7 @@ import { BookFormValue } from '@app/books/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookDeleteConfirmComponent {
-  readonly bookFormData = model.required<BookFormValue>();
+  readonly bookDetails = model.required<BookFormValue>();
   readonly submitDelete = output<void>();
   readonly closeDelete = output<void>();
 }

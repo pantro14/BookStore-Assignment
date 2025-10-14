@@ -28,7 +28,7 @@ export class BookFormComponent {
   readonly submitForm = output<BookFormData>();
   readonly closeForm = output<void>();
 
-  protected bookForm!: FormGroup<BookFormType>;
+  bookForm!: FormGroup<BookFormType>;
 
   constructor() {
     effect(() => {

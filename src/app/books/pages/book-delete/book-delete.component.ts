@@ -32,7 +32,7 @@ export class BookDeleteComponent {
             disableClose: true,
           }
         );
-        bookDeleteComponetRef.bookFormData.set(selectedBook);
+        bookDeleteComponetRef.bookDetails.set(selectedBook);
         bookDeleteComponetRef.closeDelete.subscribe(() => this.onClose());
         bookDeleteComponetRef.submitDelete.subscribe(() => this.onDelete(selectedBook));
       }

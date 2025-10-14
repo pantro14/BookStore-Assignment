@@ -1,47 +1,43 @@
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BookDialogData } from '@app/books/interfaces';
-import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
+import { byTestId, byText, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 
 import { BookDeleteConfirmComponent } from './book-delete-confirm.component';
 
 describe('BookDeleteConfirmComponent', () => {
   let spectator: Spectator<BookDeleteConfirmComponent>;
 
-  const matDialogData: BookDialogData = {
-    bookFormData: {
-      title: 'The lord of the rings',
-      price: 200,
-      pageCount: 1200,
-      onSale: true,
-    },
-    onSubmit: jest.fn(),
-    onClose: jest.fn(),
+  const bookDetails = {
+    title: 'The lord of the rings',
+    price: 200,
+    pageCount: 1200,
+    onSale: true,
   };
 
   const createComponent = createComponentFactory({
     component: BookDeleteConfirmComponent,
-    providers: [
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: matDialogData,
-      },
-    ],
   });
 
   beforeEach(() => {
-    spectator = createComponent();
+    spectator = createComponent({
+      props: {
+        bookDetails,
+      },
+    });
   });
 
   it('should check book details displayed', () => {
-    expect(spectator.query(byTestId('title-details'))).toHaveText('The lord of the rings');
-    expect(spectator.query(byTestId('on-sale-details'))).toHaveText('On Sale: Yes');
-    expect(spectator.query(byTestId('page-count-details'))).toHaveText(`Page size: 1200`);
-    expect(spectator.query(byTestId('price-details'))).toContainText('Price: 200,00 kr.');
+    expect(spectator.query(byTestId('title-delete'))).toHaveText('The lord of the rings');
+    expect(spectator.query(byText('Are you sure you want to delete this book?'))).toBeVisible();
   });
 
   it('should test cancel button', () => {
-    const closeSpy = jest.spyOn(matDialogData, 'onClose');
+    const closeSpy = jest.spyOn(spectator.component.closeDelete, 'emit');
     spectator.click(byTestId('cancel-button'));
     expect(closeSpy).toHaveBeenCalled();
+  });
+
+  it('should test submit delete button', () => {
+    const deleteSpy = jest.spyOn(spectator.component.submitDelete, 'emit');
+    spectator.click(byTestId('delete-button'));
+    expect(deleteSpy).toHaveBeenCalled();
   });
 });

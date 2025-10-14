@@ -1,10 +1,10 @@
-<mat-card data-testid="book-details">
-  @let bookDetails = bookFormData();
-  <mat-card-title data-testid="title-delete">{{ bookDetails.title }}</mat-card-title>
+<mat-card data-testid="book-delete">
+  @let book = bookDetails();
+  <mat-card-title data-testid="title-delete">{{ book.title }}</mat-card-title>
   <mat-card-content>
     <div class="delete-confirmation">
       <mat-icon>warning</mat-icon>
-      <span class="md-display-1">Are you sure you want to delete this book?</span>
+      <span>Are you sure you want to delete this book?</span>
     </div>
   </mat-card-content>
   <mat-card-actions align="end">

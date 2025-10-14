@@ -1,9 +1,9 @@
-import { signal } from '@angular/core';
-import { BookDialogComponent } from '@app/books/components/book-dialog/book-dialog.component';
+import { EventEmitter, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { BookFormComponent } from '@app/books/components/book-form/book-form.component';
 import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
-import { MockComponent } from 'ng-mocks';
 
 import { BookEditComponent } from './book-edit.component';
 
@@ -18,10 +18,22 @@ describe('BookEditComponent', () => {
     updateBook: jest.fn(),
   };
 
+  const dialogOpen = {
+    componentInstance: {
+      bookFormData: signal<BookFormData | null>(null),
+      closeForm: new EventEmitter<void>(),
+      submitForm: new EventEmitter<BookFormData>(),
+    },
+  };
+
+  const dialog = { open: jest.fn().mockImplementation(() => dialogOpen), closeAll: jest.fn() };
+
   const createComponent = createComponentFactory({
     component: BookEditComponent,
-    declarations: [MockComponent(BookDialogComponent)],
-    providers: [{ provide: BookStore, useValue: bookStore }],
+    providers: [
+      { provide: BookStore, useValue: bookStore },
+      { provide: MatDialog, useValue: dialog },
+    ],
   });
 
   beforeEach(() => {
@@ -34,24 +46,22 @@ describe('BookEditComponent', () => {
     jest.clearAllMocks();
   });
 
-  describe('Create book dialog', () => {
+  describe('Edit book page', () => {
     describe('selectedBook is null', () => {
       it('should not show a dialog', () => {
-        spectator.detectChanges();
-        const dialogComponent = spectator.query(BookDialogComponent);
+        const matDialog = spectator.inject(MatDialog);
         expect(bookStore.setSelectedBook).toHaveBeenCalledWith('1');
-        expect(dialogComponent).not.toBeVisible();
+        const spyOpen = jest.spyOn(matDialog, 'open');
+        expect(spyOpen).not.toHaveBeenCalled();
       });
 
       it('should show book 404 error', () => {
-        spectator.detectChanges();
         const erroSpy = jest.spyOn(bookStore, 'showBook404Error');
         expect(erroSpy).toHaveBeenCalled();
       });
     });
 
     describe('with selectedBook', () => {
-      let dialogComponent: BookDialogComponent | null;
       const bookData = {
         title: 'Test Book',
         price: 250,
@@ -64,34 +74,39 @@ describe('BookEditComponent', () => {
         spectator = createComponent({
           props: { bookId: '1' },
         });
-        dialogComponent = spectator.query(BookDialogComponent);
       });
 
       it('should test input data', () => {
-        expect(dialogComponent).toBeTruthy();
-        expect(dialogComponent?.bookAction).toEqual('Edit');
-        expect(dialogComponent?.bookData).toEqual(bookData);
+        const matDialog = spectator.inject(MatDialog);
+        const spyOpen = jest.spyOn(matDialog, 'open');
+        expect(spyOpen).toHaveBeenCalledWith(BookFormComponent, { width: '450px', disableClose: true });
       });
 
       it('should not show book 404 error', () => {
-        spectator.detectChanges();
         const erroSpy = jest.spyOn(bookStore, 'showBook404Error');
         expect(erroSpy).not.toHaveBeenCalled();
       });
 
-      it('should test on dialogSubmit', () => {
+      it('should test book form input data', () => {
+        const bookformComponent = dialogOpen.componentInstance;
+        expect(bookformComponent.bookFormData()).toEqual(bookData);
+      });
+
+      it('should test update book', () => {
         const bookData = {
           title: 'Test Book',
           price: 20,
           pageCount: 200,
           onSale: true,
         };
-        dialogComponent?.dialogSubmit.emit(bookData);
+        const bookformComponent = dialogOpen.componentInstance;
+        bookformComponent.submitForm.emit(bookData);
         expect(bookStore.updateBook).toHaveBeenCalledWith({ bookId: '1', bookFormData: bookData });
       });
 
-      it('should test on dialogClose', () => {
-        dialogComponent?.dialogClose.emit();
+      it('should test go back', () => {
+        const bookformComponent = dialogOpen.componentInstance;
+        bookformComponent?.closeForm.emit();
         expect(bookStore.nagivageToBookList).toHaveBeenCalled();
       });
     });

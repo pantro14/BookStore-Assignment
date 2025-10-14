@@ -24,15 +24,16 @@ export class BookCreateComponent {
       pageCount: null,
       onSale: false,
     });
-    bookFormComponetRef.closeForm.subscribe(() => this.onClose());
-    bookFormComponetRef.submitForm.subscribe(bookFormData => this.onSubmit(bookFormData));
+    bookFormComponetRef.closeForm.subscribe(() => this.goBack());
+    bookFormComponetRef.submitForm.subscribe(bookFormData => this.addBook(bookFormData));
   }
 
-  protected onSubmit(newBook: BookFormData): void {
+  protected addBook(newBook: BookFormData): void {
     this.bookStore.addBook(newBook);
+    this.goBack();
   }
 
-  protected onClose(): void {
+  protected goBack(): void {
     this.dialog.closeAll();
     this.bookStore.nagivageToBookList();
   }

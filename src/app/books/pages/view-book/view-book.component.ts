@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookDetailsComponent } from '@app/books/components/book-details/book-details.component';
 import { BookStore } from '@app/books/stores/book-store';
@@ -13,7 +13,6 @@ export class ViewBookComponent {
   protected readonly bookStore = inject(BookStore);
 
   readonly bookId = input.required<string>();
-  protected readonly bookData = computed(() => this.bookStore.selectedBook());
 
   constructor() {
     effect(() => {
@@ -32,7 +31,7 @@ export class ViewBookComponent {
             disableClose: true,
           }
         );
-        bookDetailsComponetRef.bookFormData.set(selectedBook);
+        bookDetailsComponetRef.bookDetails.set(selectedBook);
         bookDetailsComponetRef.closeDetails.subscribe(() => this.onClose());
       }
     });

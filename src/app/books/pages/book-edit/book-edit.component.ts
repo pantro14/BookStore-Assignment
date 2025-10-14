@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookFormComponent } from '@app/books/components/book-form/book-form.component';
 import { BookFormData } from '@app/books/interfaces';
@@ -14,7 +14,6 @@ export class BookEditComponent {
   protected readonly bookStore = inject(BookStore);
 
   readonly bookId = input.required<string>();
-  protected readonly bookData = computed(() => this.bookStore.selectedBook());
 
   constructor() {
     effect(() => {
@@ -31,18 +30,18 @@ export class BookEditComponent {
           disableClose: true,
         });
         bookFormComponetRef.bookFormData.set(selectedBook);
-        bookFormComponetRef.closeForm.subscribe(() => this.onClose());
-        bookFormComponetRef.submitForm.subscribe(bookFormData => this.onSubmit(bookFormData));
+        bookFormComponetRef.closeForm.subscribe(() => this.goBack());
+        bookFormComponetRef.submitForm.subscribe(bookFormData => this.updateBook(bookFormData));
       }
     });
   }
 
-  onSubmit(bookFormData: BookFormData): void {
+  updateBook(bookFormData: BookFormData): void {
     this.bookStore.updateBook({ bookId: this.bookId().toString(), bookFormData });
-    this.onClose();
+    this.goBack();
   }
 
-  onClose(): void {
+  goBack(): void {
     this.dialog.closeAll();
     this.bookStore.nagivageToBookList();
   }
