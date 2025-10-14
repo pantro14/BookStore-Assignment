@@ -35,7 +35,7 @@ describe('BookDetailsComponent', () => {
 
   it('should check book details displayed', () => {
     expect(spectator.query(byTestId('title-details'))).toHaveText('The lord of the rings');
-    expect(spectator.query(byTestId('on-sale-details'))).toHaveText('books.global.onSale: Yes');
+    expect(spectator.query(byTestId('on-sale-details'))).toHaveText('books.global.onSale: books.global.yes');
     expect(spectator.query(byTestId('page-count-details'))).toHaveText('books.global.pageCount: 1200');
     expect(spectator.query(byTestId('price-details'))).toContainText('books.global.price: 200,00 kr.');
     expect(spectator.query(byTestId('author-details'))).toHaveText('books.global.author: J.R.R. Tolkien');

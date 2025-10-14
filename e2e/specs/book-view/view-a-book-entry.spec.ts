@@ -21,7 +21,7 @@ test.describe('Use Case 3: View specific book entry', () => {
     await expect(price).toBeVisible();
     await expect(pageCount).toBeVisible();
     await expect(title).toHaveText('The Forgotten Echo');
-    await expect(onSale).toHaveText('På tilbud: Yes');
+    await expect(onSale).toHaveText('På tilbud: Ja');
     await expect(pageCount).toHaveText('Sidetal: 412');
     await expect(price).toHaveText('Pris: 79,00 kr.');
     await expect(page.getByTestId('cancel-button')).toBeEnabled();

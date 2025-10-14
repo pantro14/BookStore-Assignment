@@ -64,7 +64,7 @@ describe('BookListComponent', () => {
       const firstRowCells = tableRows[0].querySelectorAll('.mat-mdc-cell') as NodeListOf<Element>;
       expect(firstRowCells[0]).toHaveText('Book 1');
       expect(firstRowCells[1]).toHaveText('79,00 kr.');
-      expect(firstRowCells[2]).toHaveText('Yes');
+      expect(firstRowCells[2]).toHaveText('books.global.yes');
       expect(firstRowCells[3].querySelector('button')).toBeVisible();
       expect(firstRowCells[4].querySelector('button')).toBeVisible();
     });

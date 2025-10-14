@@ -29,7 +29,7 @@ test.describe('Use Case 1: viewing all books ', () => {
 
     await expect(bookItems.nth(0)).toHaveText(/The Forgotten Echo/);
     await expect(bookItems.nth(0)).toHaveText(/79,00 kr./);
-    await expect(bookItems.nth(0)).toHaveText(/Yes/);
+    await expect(bookItems.nth(0)).toHaveText(/Ja/);
     await expect(bookItems.nth(0).getByRole('button', { name: 'edit' })).toBeVisible();
     await expect(bookItems.nth(0).getByRole('button', { name: 'delete' })).toBeVisible();
   });

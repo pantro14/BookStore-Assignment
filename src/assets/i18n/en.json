@@ -7,7 +7,9 @@
       "author": "Author",
       "pageCount": "Page Count",
       "lastUpdatedBy": "Last updated by",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "yes": "Yes",
+      "no": "No"
     },
     "list": {
       "title": "Book List",

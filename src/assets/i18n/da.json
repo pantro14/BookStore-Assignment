@@ -7,7 +7,9 @@
       "author": "Forfatter",
       "pageCount": "Sidetal",
       "lastUpdatedBy": "Sidst opdateret af",
-      "cancel": "Annuller"
+      "cancel": "Annuller",
+      "yes": "Ja",
+      "no": "Nej"
     },
     "list": {
       "title": "Bogliste",
