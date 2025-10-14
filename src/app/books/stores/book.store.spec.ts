@@ -2,7 +2,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { createServiceFactory } from '@ngneat/spectator/jest';
 import { BookstoreBffService } from '@openapi';
-import { of, throwError } from 'rxjs';
+import { EMPTY, of, throwError } from 'rxjs';
 
 import { BookStore } from './book-store';
 
@@ -200,6 +200,55 @@ describe('BookStore', () => {
 
       expect(store.bookList()).toEqual([existingBook]);
       expect(navigateSpy).toHaveBeenCalledWith('Book could not be edited', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: 'snackbar-error',
+      });
+    });
+  });
+
+  describe('deleteBook', () => {
+    const existingBook = { id: '1', title: 'Book 1', price: 10, pageCount: 100, onSale: false };
+
+    beforeEach(() => {
+      bookstoreBffService.getBooks.mockReturnValue(of([existingBook]));
+      store.loadBooks({ onSale: false });
+    });
+
+    it('should delete a book and update the state', () => {
+      bookstoreBffService.deleteBook.mockReturnValue(of(EMPTY));
+
+      const spectator = createService();
+      const store = spectator.service;
+
+      const snackbar = spectator.inject(MatSnackBar);
+      const navigateSpy = jest.spyOn(snackbar, 'open');
+
+      store.loadBooks({ onSale: false });
+      store.deleteBook({ bookId: '1', bookTitle: existingBook.title });
+
+      expect(store.bookList()).toEqual([]);
+      expect(navigateSpy).toHaveBeenCalledWith('Book "Book 1" deleted successfully!', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: 'snackbar-success',
+      });
+    });
+
+    it('should handle error when updating a book fails', () => {
+      bookstoreBffService.deleteBook.mockReturnValue(throwError(() => new Error('Update failed')));
+
+      const spectator = createService();
+      const store = spectator.service;
+
+      const snackbar = spectator.inject(MatSnackBar);
+      const navigateSpy = jest.spyOn(snackbar, 'open');
+
+      store.loadBooks({ onSale: false });
+      store.deleteBook({ bookId: '1', bookTitle: existingBook.title });
+
+      expect(store.bookList()).toEqual([existingBook]);
+      expect(navigateSpy).toHaveBeenCalledWith('Book could not be deleted', 'Close', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'snackbar-error',

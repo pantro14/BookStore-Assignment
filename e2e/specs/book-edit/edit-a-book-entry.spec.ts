@@ -28,7 +28,7 @@ test.describe('Use Case 5: Editing a book entry', () => {
     await expect(page.getByTestId('submit-button')).toBeDisabled();
   });
 
-  test('should edit new book entry', async ({ page }) => {
+  test('should edit a book entry', async ({ page }) => {
     await page.goto('/books/edit/xyxqwe1-23456789-345678');
 
     const priceInput = page.getByTestId('price-input');

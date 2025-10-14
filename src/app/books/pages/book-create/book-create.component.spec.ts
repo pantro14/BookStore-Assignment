@@ -1,7 +1,9 @@
-import { BookDialogComponent } from '@app/books/components/book-dialog/book-dialog.component';
+import { EventEmitter, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { BookFormComponent } from '@app/books/components/book-form/book-form.component';
+import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
-import { MockComponent } from 'ng-mocks';
 
 import { BookCreateComponent } from './book-create.component';
 
@@ -13,31 +15,35 @@ describe('BookCreateComponent', () => {
     nagivageToBookList: jest.fn(),
   };
 
+  const dialogOpen = {
+    componentInstance: {
+      bookFormData: signal<BookFormData | null>(null),
+      closeForm: new EventEmitter<void>(),
+      submitForm: new EventEmitter<BookFormData>(),
+    },
+  };
+
+  const dialog = { open: jest.fn().mockImplementation(() => dialogOpen), closeAll: jest.fn() };
+
   const createComponent = createComponentFactory({
     component: BookCreateComponent,
-    declarations: [MockComponent(BookDialogComponent)],
-    providers: [{ provide: BookStore, useValue: bookStore }],
+    providers: [
+      { provide: BookStore, useValue: bookStore },
+      { provide: MatDialog, useValue: dialog },
+    ],
   });
 
   beforeEach(() => {
     spectator = createComponent();
   });
 
-  describe('Create book dialog', () => {
-    let dialogComponent: BookDialogComponent | null;
-
-    beforeEach(() => {
-      dialogComponent = spectator.query(BookDialogComponent);
-    });
-
-    it('should create the dialog', () => {
-      expect(dialogComponent).toBeVisible();
-    });
-
+  describe('Create book page', () => {
     it('should test input data', () => {
-      expect(dialogComponent).toBeTruthy();
-      expect(dialogComponent?.bookAction).toEqual('Create');
-      expect(dialogComponent?.bookData).toEqual({
+      const matDialog = spectator.inject(MatDialog);
+      const spyOpen = jest.spyOn(matDialog, 'open');
+      expect(spyOpen).toHaveBeenCalledWith(BookFormComponent, { width: '450px', disableClose: true });
+      const bookformComponent = dialogOpen.componentInstance;
+      expect(bookformComponent.bookFormData()).toEqual({
         title: null,
         price: null,
         pageCount: null,
@@ -45,19 +51,21 @@ describe('BookCreateComponent', () => {
       });
     });
 
-    it('should test on dialogSubmit', () => {
+    it('should test addBook', () => {
       const bookData = {
         title: 'Test Book',
         price: 20,
         pageCount: 200,
         onSale: true,
       };
-      dialogComponent?.dialogSubmit.emit(bookData);
+      const bookformComponent = dialogOpen.componentInstance;
+      bookformComponent.submitForm.emit(bookData);
       expect(bookStore.addBook).toHaveBeenCalledWith(bookData);
     });
 
     it('should test on dialogClose', () => {
-      dialogComponent?.dialogClose.emit();
+      const bookformComponent = dialogOpen.componentInstance;
+      bookformComponent?.closeForm.emit();
       expect(bookStore.nagivageToBookList).toHaveBeenCalled();
     });
   });

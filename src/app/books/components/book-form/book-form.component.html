@@ -48,18 +48,9 @@
         </div>
       </mat-card-content>
       <mat-card-actions align="end">
+        <button mat-raised-button type="button" (click)="onCancel()" data-testid="cancel-button">Cancel</button>
         <button
           mat-flat-button
-          type="button"
-          (click)="onCancel()"
-          style="margin-right: 8px"
-          data-testid="cancel-button"
-        >
-          Cancel
-        </button>
-        <button
-          mat-flat-button
-          color="primary"
           type="submit"
           [disabled]="bookForm.invalid || isFormValueUnchanged"
           data-testid="submit-button"

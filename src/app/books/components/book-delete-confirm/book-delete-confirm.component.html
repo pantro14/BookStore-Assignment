@@ -1,0 +1,14 @@
+<mat-card data-testid="book-delete">
+  @let book = bookDetails();
+  <mat-card-title data-testid="title-delete">{{ book.title }}</mat-card-title>
+  <mat-card-content>
+    <div class="delete-confirmation">
+      <mat-icon>warning</mat-icon>
+      <span>Are you sure you want to delete this book?</span>
+    </div>
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-raised-button type="button" (click)="closeDelete.emit()" data-testid="cancel-button">Cancel</button>
+    <button mat-flat-button type="button" (click)="submitDelete.emit()" data-testid="delete-button">delete</button>
+  </mat-card-actions>
+</mat-card>

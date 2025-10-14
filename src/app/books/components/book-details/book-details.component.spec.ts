@@ -1,7 +1,5 @@
 import { registerLocaleData } from '@angular/common';
 import localeDa from '@angular/common/locales/da';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BookDialogData } from '@app/books/interfaces';
 import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 
 import { BookDetailsComponent } from './book-details.component';
@@ -11,29 +9,23 @@ registerLocaleData(localeDa, 'da-DK');
 describe('BookDetailsComponent', () => {
   let spectator: Spectator<BookDetailsComponent>;
 
-  const matDialogData: BookDialogData = {
-    bookFormData: {
-      title: 'The lord of the rings',
-      price: 200,
-      pageCount: 1200,
-      onSale: true,
-    },
-    onSubmit: jest.fn(),
-    onClose: jest.fn(),
+  const bookDetails = {
+    title: 'The lord of the rings',
+    price: 200,
+    pageCount: 1200,
+    onSale: true,
   };
 
   const createComponent = createComponentFactory({
     component: BookDetailsComponent,
-    providers: [
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: matDialogData,
-      },
-    ],
   });
 
   beforeEach(() => {
-    spectator = createComponent();
+    spectator = createComponent({
+      props: {
+        bookDetails,
+      },
+    });
   });
 
   it('should check book details displayed', () => {
@@ -44,7 +36,7 @@ describe('BookDetailsComponent', () => {
   });
 
   it('should test cancel button', () => {
-    const closeSpy = jest.spyOn(matDialogData, 'onClose');
+    const closeSpy = jest.spyOn(spectator.component.closeDetails, 'emit');
     spectator.click(byTestId('cancel-button'));
     expect(closeSpy).toHaveBeenCalled();
   });

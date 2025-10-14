@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BookFormComponent } from '@app/books/components/book-form/book-form.component';
+import { BookDeleteConfirmComponent } from '@app/books/components/book-delete-confirm/book-delete-confirm.component';
 import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 
 @Component({
-  selector: 'mxs-book-edit',
+  selector: 'mxs-book-delete',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookEditComponent {
+export class BookDeleteComponent {
   private readonly dialog = inject(MatDialog);
   protected readonly bookStore = inject(BookStore);
 
@@ -25,23 +25,26 @@ export class BookEditComponent {
       if (!selectedBook) {
         this.bookStore.showBook404Error();
       } else {
-        const { componentInstance: bookFormComponetRef } = this.dialog.open<BookFormComponent>(BookFormComponent, {
-          width: '450px',
-          disableClose: true,
-        });
-        bookFormComponetRef.bookFormData.set(selectedBook);
-        bookFormComponetRef.closeForm.subscribe(() => this.goBack());
-        bookFormComponetRef.submitForm.subscribe(bookFormData => this.updateBook(bookFormData));
+        const { componentInstance: bookDeleteComponetRef } = this.dialog.open<BookDeleteConfirmComponent>(
+          BookDeleteConfirmComponent,
+          {
+            width: '450px',
+            disableClose: true,
+          }
+        );
+        bookDeleteComponetRef.bookDetails.set(selectedBook);
+        bookDeleteComponetRef.closeDelete.subscribe(() => this.onClose());
+        bookDeleteComponetRef.submitDelete.subscribe(() => this.onDelete(selectedBook));
       }
     });
   }
 
-  updateBook(bookFormData: BookFormData): void {
-    this.bookStore.updateBook({ bookId: this.bookId().toString(), bookFormData });
-    this.goBack();
+  onDelete(selectedBook: BookFormData): void {
+    this.bookStore.deleteBook({ bookId: this.bookId(), bookTitle: selectedBook.title });
+    this.onClose();
   }
 
-  goBack(): void {
+  onClose(): void {
     this.dialog.closeAll();
     this.bookStore.nagivageToBookList();
   }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, model, output } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -10,10 +10,9 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { BookDialogData, BookFormData, BookFormType } from '@app/books/interfaces';
+import { BookFormData, BookFormType, BookFormValue } from '@app/books/interfaces';
 
 @Component({
   selector: 'mxs-book-form',
@@ -23,22 +22,30 @@ import { BookDialogData, BookFormData, BookFormType } from '@app/books/interface
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookFormComponent {
-  readonly data = inject<BookDialogData>(MAT_DIALOG_DATA);
   private formBuilder = inject(FormBuilder);
 
-  readonly bookForm: FormGroup<BookFormType>;
+  readonly bookFormData = model.required<BookFormValue>();
+  readonly submitForm = output<BookFormData>();
+  readonly closeForm = output<void>();
+
+  bookForm!: FormGroup<BookFormType>;
 
   constructor() {
-    const { title, price, pageCount, onSale } = this.data.bookFormData;
-    this.bookForm = this.formBuilder.group<BookFormType>({
-      title: this.formBuilder.control<string | null>(title, [Validators.required, this.titleValidator]),
-      price: this.formBuilder.control<number | null>(price, [Validators.required, Validators.min(0.01)]),
-      pageCount: this.formBuilder.control<number | null>(pageCount, [
-        Validators.required,
-        Validators.min(1),
-        Validators.pattern('^[0-9]+$'),
-      ]),
-      onSale: this.formBuilder.control<boolean | null>(onSale),
+    effect(() => {
+      const bookFormData = this.bookFormData();
+      if (bookFormData) {
+        const { title, price, pageCount, onSale } = this.bookFormData();
+        this.bookForm = this.formBuilder.group<BookFormType>({
+          title: this.formBuilder.control<string | null>(title, [Validators.required, this.titleValidator]),
+          price: this.formBuilder.control<number | null>(price, [Validators.required, Validators.min(0.01)]),
+          pageCount: this.formBuilder.control<number | null>(pageCount, [
+            Validators.required,
+            Validators.min(1),
+            Validators.pattern('^[0-9]+$'),
+          ]),
+          onSale: this.formBuilder.control<boolean | null>(onSale),
+        });
+      }
     });
   }
 
@@ -63,15 +70,15 @@ export class BookFormComponent {
 
   get isFormValueUnchanged(): boolean {
     return Object.entries(this.bookForm.value).every(([key, value]) => {
-      return value === this.data.bookFormData[key as keyof BookFormData];
+      return value === this.bookFormData()[key as keyof BookFormData];
     });
   }
 
   onSubmit() {
-    this.data.onSubmit(this.bookForm.value as BookFormData);
+    this.submitForm.emit(this.bookForm.value as BookFormData);
   }
 
   onCancel() {
-    this.data.onClose();
+    this.closeForm.emit();
   }
 }

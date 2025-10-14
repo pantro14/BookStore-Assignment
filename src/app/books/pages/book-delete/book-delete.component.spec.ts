@@ -1,33 +1,35 @@
 import { EventEmitter, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BookDetailsComponent } from '@app/books/components/book-details/book-details.component';
+import { BookDeleteConfirmComponent } from '@app/books/components/book-delete-confirm/book-delete-confirm.component';
 import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 
-import { ViewBookComponent } from './view-book.component';
+import { BookDeleteComponent } from './book-delete.component';
 
-describe('ViewBookComponent', () => {
-  let spectator: Spectator<ViewBookComponent>;
+describe('BookDeleteComponent', () => {
+  let spectator: Spectator<BookDeleteComponent>;
 
   const bookStore = {
     setSelectedBook: jest.fn(),
     selectedBook: signal<BookFormData | null>(null),
     showBook404Error: jest.fn(),
     nagivageToBookList: jest.fn(),
+    deleteBook: jest.fn(),
   };
 
   const dialogOpen = {
     componentInstance: {
       bookDetails: signal<BookFormData | null>(null),
-      closeDetails: new EventEmitter<void>(),
+      closeDelete: new EventEmitter<void>(),
+      submitDelete: new EventEmitter<BookFormData>(),
     },
   };
 
   const dialog = { open: jest.fn().mockImplementation(() => dialogOpen), closeAll: jest.fn() };
 
   const createComponent = createComponentFactory({
-    component: ViewBookComponent,
+    component: BookDeleteComponent,
     providers: [
       { provide: BookStore, useValue: bookStore },
       { provide: MatDialog, useValue: dialog },
@@ -44,7 +46,7 @@ describe('ViewBookComponent', () => {
     jest.clearAllMocks();
   });
 
-  describe('View book page', () => {
+  describe('Delete book page', () => {
     describe('selectedBook is null', () => {
       it('should not show a dialog', () => {
         const matDialog = spectator.inject(MatDialog);
@@ -74,26 +76,37 @@ describe('ViewBookComponent', () => {
         });
       });
 
-      it('should test dialog open input data', () => {
+      it('should test input data', () => {
         const matDialog = spectator.inject(MatDialog);
         const spyOpen = jest.spyOn(matDialog, 'open');
-        expect(spyOpen).toHaveBeenCalledWith(BookDetailsComponent, { width: '450px', disableClose: true });
+        expect(spyOpen).toHaveBeenCalledWith(BookDeleteConfirmComponent, { width: '450px', disableClose: true });
       });
 
       it('should not show book 404 error', () => {
-        spectator.detectChanges();
         const erroSpy = jest.spyOn(bookStore, 'showBook404Error');
         expect(erroSpy).not.toHaveBeenCalled();
       });
 
-      it('should test book details input data', () => {
-        const bookDetailsComponent = dialogOpen.componentInstance;
-        expect(bookDetailsComponent.bookDetails()).toEqual(bookData);
+      it('should test book form input data', () => {
+        const bookformComponent = dialogOpen.componentInstance;
+        expect(bookformComponent.bookDetails()).toEqual(bookData);
       });
 
-      it('should test on dialogClose', () => {
-        const bookDetailsComponent = dialogOpen.componentInstance;
-        bookDetailsComponent?.closeDetails.emit();
+      it('should test delete a book', () => {
+        const bookData = {
+          title: 'Test Book',
+          price: 20,
+          pageCount: 200,
+          onSale: true,
+        };
+        const bookformComponent = dialogOpen.componentInstance;
+        bookformComponent.submitDelete.emit(bookData);
+        expect(bookStore.deleteBook).toHaveBeenCalledWith({ bookId: '1', bookTitle: bookData.title });
+      });
+
+      it('should test go back', () => {
+        const bookformComponent = dialogOpen.componentInstance;
+        bookformComponent?.closeDelete.emit();
         expect(bookStore.nagivageToBookList).toHaveBeenCalled();
       });
     });

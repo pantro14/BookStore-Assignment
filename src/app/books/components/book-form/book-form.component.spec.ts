@@ -1,6 +1,4 @@
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BookDialogData } from '@app/books/interfaces';
 import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 
 import { BookFormComponent } from './book-form.component';
@@ -8,37 +6,31 @@ import { BookFormComponent } from './book-form.component';
 describe('BookFormComponent', () => {
   let spectator: Spectator<BookFormComponent>;
 
-  const matDialogData: BookDialogData = {
-    bookFormData: {
-      title: null,
-      price: null,
-      pageCount: null,
-      onSale: false,
-    },
-    onSubmit: jest.fn(),
-    onClose: jest.fn(),
+  const bookFormData = {
+    title: null,
+    price: null,
+    pageCount: null,
+    onSale: false,
   };
 
   const createComponent = createComponentFactory({
     component: BookFormComponent,
     imports: [ReactiveFormsModule],
-    providers: [
-      {
-        provide: MAT_DIALOG_DATA,
-        useValue: matDialogData,
-      },
-    ],
   });
 
   beforeEach(() => {
-    spectator = createComponent();
+    spectator = createComponent({
+      props: {
+        bookFormData,
+      },
+    });
   });
 
   describe('bookForm - null data', () => {
     it('should initialize an empty form', () => {
       const bookForm = spectator.component.bookForm;
 
-      expect(bookForm.value).toEqual(matDialogData.bookFormData);
+      expect(bookForm.value).toEqual(bookFormData);
       expect(bookForm.valid).toBeFalsy();
       expect(spectator.query(byTestId('book-form'))).toBeVisible();
 
@@ -68,29 +60,33 @@ describe('BookFormComponent', () => {
       expect(bookForm.controls['pageCount'].errors).toEqual({ required: true });
     });
 
-    it('should close the dialog when cancel button is clicked', () => {
+    it('should call closeForm when the button is clicked', () => {
       const cancelButton = spectator.query(byTestId('cancel-button')) as HTMLButtonElement;
+      const spyCloseForm = jest.spyOn(spectator.component.closeForm, 'emit');
       cancelButton.click();
-
-      expect(matDialogData.onClose).toHaveBeenCalled();
+      expect(spyCloseForm).toHaveBeenCalled();
     });
   });
 
   describe('bookForm - existing data', () => {
+    const bookFormData = {
+      title: 'Test Book',
+      price: 20,
+      pageCount: 200,
+      onSale: true,
+    };
     beforeEach(() => {
-      matDialogData.bookFormData = {
-        title: 'Test Book',
-        price: 20,
-        pageCount: 200,
-        onSale: true,
-      };
-      spectator = createComponent();
+      spectator = createComponent({
+        props: {
+          bookFormData,
+        },
+      });
     });
 
     it('should initialize a filled in form', () => {
       const bookForm = spectator.component.bookForm;
 
-      expect(bookForm.value).toEqual(matDialogData.bookFormData);
+      expect(bookForm.value).toEqual(bookFormData);
       expect(bookForm.valid).toBeTruthy();
       expect(spectator.query(byTestId('book-form'))).toBeVisible();
 
@@ -115,17 +111,15 @@ describe('BookFormComponent', () => {
       expect(submitButton.disabled).toBeFalsy();
     });
 
-    it('should submit the form when submit button is clicked', () => {
+    it('should call submitForm when submit button is clicked', () => {
       const priceInput = spectator.query(byTestId('price-input')) as HTMLInputElement;
       spectator.typeInElement('250', priceInput);
 
       const submitButton = spectator.query(byTestId('submit-button')) as HTMLButtonElement;
+      const spySubmitForm = jest.spyOn(spectator.component.submitForm, 'emit');
       submitButton.click();
 
-      expect(matDialogData.onSubmit).toHaveBeenCalledWith({
-        ...matDialogData.bookFormData,
-        price: 250,
-      });
+      expect(spySubmitForm).toHaveBeenCalled();
     });
   });
 

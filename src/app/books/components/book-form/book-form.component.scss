@@ -4,6 +4,12 @@
   margin: auto;
 }
 
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .mat-card-content {
   margin-bottom: 10px;
 }

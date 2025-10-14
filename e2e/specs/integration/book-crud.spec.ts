@@ -55,5 +55,15 @@ test.describe('Happy flow: book creation and edition at once', () => {
     await submitButton.click();
 
     await expect(page.getByText('Book "The lord of the rings delux edition" edited successfully!')).toBeVisible();
+
+    const deleteBook = bookTable.getByTitle('Delete Book').nth(9);
+    await deleteBook.click();
+
+    await expect(page.getByTestId('book-delete')).toBeVisible();
+    const deleteButton = page.getByTestId('delete-button');
+    await expect(deleteButton).toBeVisible();
+    await deleteButton.click();
+
+    await expect(page.getByText('Book "The lord of the rings delux edition" deleted successfully!')).toBeVisible();
   });
 });

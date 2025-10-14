@@ -1,17 +1,18 @@
-import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, model, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
 import { BookFormValue } from '@app/books/interfaces';
 
 @Component({
-  selector: 'mxs-book-details',
-  imports: [MatCardModule, MatButtonModule, MatListModule, CurrencyPipe],
-  templateUrl: './book-details.component.html',
+  selector: 'mxs-book-delete-confirm',
+  imports: [MatCardModule, MatButtonModule, MatIcon],
+  templateUrl: './book-delete-confirm.component.html',
+  styleUrl: './book-delete-confirm.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookDetailsComponent {
+export class BookDeleteConfirmComponent {
   readonly bookDetails = model.required<BookFormValue>();
-  readonly closeDetails = output<void>();
+  readonly submitDelete = output<void>();
+  readonly closeDelete = output<void>();
 }
