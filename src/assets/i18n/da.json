@@ -1,1 +1,45 @@
-{}
+{
+  "books": {
+    "global": {
+      "title": "Titel",
+      "price": "Pris",
+      "onSale": "På tilbud",
+      "author": "Forfatter",
+      "pageCount": "Sidetal",
+      "lastUpdatedBy": "Sidst opdateret af",
+      "cancel": "Annuller"
+    },
+    "list": {
+      "title": "Bogliste",
+      "newBook": "Ny bog",
+      "paginator": {
+        "itemsPerPage": "Elementer pr. side",
+        "nextPage": "Næste side",
+        "previousPage": "Forrige side"
+      }
+    },
+    "form": {
+      "title": "Tilføj bogdetaljer",
+      "submit": "Indsend",
+      "validations": {
+        "title": {
+          "required": "Titel er påkrævet.",
+          "pattern": "Titel indeholder ugyldige tegn."
+        },
+        "price": {
+          "required": "Pris er påkrævet.",
+          "min": "Prisen skal være mindst {{min}}."
+        },
+        "pageCount": {
+          "required": "Sidetal er påkrævet.",
+          "min": "Sidetal skal være mindst {{min}}.",
+          "pattern": "Sidetal skal være et gyldigt tal."
+        }
+      }
+    },
+    "delete": {
+      "warning": "Er du sikker på, at du vil slette denne bog?",
+      "confirm": "Slet"
+    }
+  }
+}

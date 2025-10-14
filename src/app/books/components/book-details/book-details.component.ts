@@ -4,10 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { BookDetails } from '@app/books/interfaces';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'mxs-book-details',
-  imports: [MatCardModule, MatButtonModule, MatListModule, CurrencyPipe],
+  imports: [MatCardModule, MatButtonModule, MatListModule, CurrencyPipe, TranslatePipe],
   templateUrl: './book-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

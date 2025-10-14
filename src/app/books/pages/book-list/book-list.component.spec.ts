@@ -3,7 +3,9 @@ import localeDa from '@angular/common/locales/da';
 import { signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookStore } from '@app/books/stores/book-store';
+import { translateServiceMock } from '@app/books/utils/translate-service.mock';
 import { byTestId, createComponentFactory, Spectator } from '@ngneat/spectator/jest';
+import { TranslateService } from '@ngx-translate/core';
 import { BookDTO } from '@openapi';
 
 import { BookListComponent } from './book-list.component';
@@ -28,6 +30,7 @@ describe('BookListComponent', () => {
     providers: [
       { provide: BookStore, useValue: bookStore },
       { provide: Router, useValue: { navigate: jest.fn() } },
+      { provide: TranslateService, useValue: translateServiceMock },
     ],
   });
 
@@ -36,9 +39,9 @@ describe('BookListComponent', () => {
   });
 
   it('should check elements of the page', () => {
-    expect(spectator.query(byTestId('card-title'))).toHaveText('Books');
-    expect(spectator.query(byTestId('new-book-button'))).toHaveText('New Book');
-    expect(spectator.query(byTestId('on-sale-book-toggle'))).toHaveText('On Sale');
+    expect(spectator.query(byTestId('card-title'))).toHaveText('books.list.title');
+    expect(spectator.query(byTestId('new-book-button'))).toHaveText('books.list.newBook');
+    expect(spectator.query(byTestId('on-sale-book-toggle'))).toHaveText('books.global.onSale');
     expect(spectator.query(byTestId('books-table'))).toBeVisible();
     expect(spectator.query(byTestId('paginator'))).toBeVisible();
   });
@@ -47,9 +50,9 @@ describe('BookListComponent', () => {
     it('should check headers of the table', () => {
       const tableHeader = spectator.queryAll('.mat-mdc-header-cell') as Element[];
       expect(tableHeader.length).toBe(5);
-      /* expect(tableHeader[0]).toHaveText('Title'); */
-      expect(tableHeader[1]).toHaveText('Price');
-      expect(tableHeader[2]).toHaveText('On Sale');
+      expect(tableHeader[0]).toHaveText('books.global.title');
+      expect(tableHeader[1]).toHaveText('books.global.price');
+      expect(tableHeader[2]).toHaveText('books.global.onSale');
       expect(tableHeader[3]).toHaveText('');
       expect(tableHeader[4]).toHaveText('');
     });

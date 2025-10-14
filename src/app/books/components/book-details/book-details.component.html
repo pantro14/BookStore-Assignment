@@ -4,25 +4,28 @@
     <mat-card-title data-testid="title-details">{{ book.title }}</mat-card-title>
     <mat-card-content>
       <mat-list role="list">
-        <mat-list-item role="listitem" data-testid="last-updated-by"
-          >Last updated by: <strong>{{ book.lastUpdatedBy }}</strong></mat-list-item
-        >
-        <mat-list-item role="listitem" data-testid="on-sale-details"
-          >On Sale: <strong>{{ book.onSale ? 'Yes' : 'No' }}</strong></mat-list-item
-        >
-        <mat-list-item role="listitem" data-testid="page-count-details"
-          >Page size: <strong>{{ book.pageCount }}</strong></mat-list-item
-        >
-        <mat-list-item role="listitem" data-testid="price-details"
-          >Price: <strong>{{ book.price | currency: 'DKK' : 'symbol' : '1.2-2' : 'da-DK' }}</strong></mat-list-item
-        >
+        <mat-list-item role="listitem" data-testid="last-updated-by">
+          {{ 'books.global.lastUpdatedBy' | translate }}: <strong>{{ book.lastUpdatedBy }}</strong>
+        </mat-list-item>
+        <mat-list-item role="listitem" data-testid="on-sale-details">
+          {{ 'books.global.onSale' | translate }}: <strong>{{ book.onSale ? 'Yes' : 'No' }}</strong>
+        </mat-list-item>
+        <mat-list-item role="listitem" data-testid="page-count-details">
+          {{ 'books.global.pageCount' | translate }}: <strong>{{ book.pageCount }}</strong>
+        </mat-list-item>
+        <mat-list-item role="listitem" data-testid="price-details">
+          {{ 'books.global.price' | translate }}:
+          <strong>{{ book.price | currency: 'DKK' : 'symbol' : '1.2-2' : 'da-DK' }}</strong>
+        </mat-list-item>
         <mat-list-item role="listitem" data-testid="author-details">
-          Author: <strong>{{ book.author }}</strong>
+          {{ 'books.global.author' | translate }}: <strong>{{ book.author }}</strong>
         </mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-actions align="end">
-      <button mat-raised-button type="button" (click)="closeDetails.emit()" data-testid="cancel-button">Cancel</button>
+      <button mat-raised-button type="button" (click)="closeDetails.emit()" data-testid="cancel-button">
+        {{ 'books.form.cancel' | translate }}
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>

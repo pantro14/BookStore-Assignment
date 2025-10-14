@@ -1,7 +1,7 @@
 @let loadingData = loading();
 <mat-card class="books-card" appearance="outlined">
   <mat-card-header>
-    <mat-card-title data-testid="card-title">Books</mat-card-title>
+    <mat-card-title data-testid="card-title">{{ 'books.list.title' | translate }}</mat-card-title>
   </mat-card-header>
   @if (loadingData) {
     <mat-progress-bar style="margin: 10px 0" mode="indeterminate"></mat-progress-bar>
@@ -10,34 +10,38 @@
   }
   <mat-card-content class="spaced-content">
     <div class="panel">
-      <button mat-flat-button (click)="createBook()" data-testid="new-book-button">New Book</button>
+      <button mat-flat-button (click)="createBook()" data-testid="new-book-button">
+        {{ 'books.list.newBook' | translate }}
+      </button>
       <p>
-        <mat-slide-toggle (change)="onSaleToggle($event)" data-testid="on-sale-book-toggle">On Sale</mat-slide-toggle>
+        <mat-slide-toggle (change)="onSaleToggle($event)" data-testid="on-sale-book-toggle">{{
+          'books.global.onSale' | translate
+        }}</mat-slide-toggle>
       </p>
     </div>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" data-testid="books-table">
       <ng-container matColumnDef="title">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'books.global.title' | translate }}</th>
         <td mat-cell *matCellDef="let book">{{ book.title }}</td>
       </ng-container>
 
       <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'books.global.price' | translate }}</th>
         <td mat-cell *matCellDef="let book" data-testid="book-price">
           {{ book.price | currency: 'DKK' : 'symbol' : '1.2-2' : 'da-DK' }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="onSale">
-        <th mat-header-cell *matHeaderCellDef>On Sale</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'books.global.onSale' | translate }}</th>
         <td mat-cell *matCellDef="let book">{{ book.onSale ? 'Yes' : 'No' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let book">
-          <button mat-mini-fab (click)="editBook($event, book.id)" aria-label="edit-book" title="Edit Book">
+          <button mat-mini-fab (click)="editBook($event, book.id)" aria-label="edit book" title="Edit Book">
             <mat-icon>edit</mat-icon>
           </button>
         </td>
@@ -46,7 +50,7 @@
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let book">
-          <button mat-mini-fab (click)="deleteBook($event, book.id)" aria-label="delete-book" title="Delete Book">
+          <button mat-mini-fab (click)="deleteBook($event, book.id)" aria-label="delete book" title="Delete Book">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

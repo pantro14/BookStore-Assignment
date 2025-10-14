@@ -1,1 +1,45 @@
-{}
+{
+  "books": {
+    "global": {
+      "title": "Title",
+      "price": "Price",
+      "onSale": "On Sale",
+      "author": "Author",
+      "pageCount": "Page Count",
+      "lastUpdatedBy": "Last updated by",
+      "cancel": "Cancel"
+    },
+    "list": {
+      "title": "Book List",
+      "newBook": "New Book",
+      "paginator": {
+        "itemsPerPage": "Items per page",
+        "nextPage": "Next Page",
+        "previousPage": "Previous Page"
+      }
+    },
+    "form": {
+      "title": "Add Book Details",
+      "submit": "Submit",
+      "validations": {
+        "title": {
+          "required": "Title is required.",
+          "pattern": "Title contains invalid characters."
+        },
+        "price": {
+          "required": "Price is required.",
+          "min": "Price must be at least {{min}}."
+        },
+        "pageCount": {
+          "required": "Page Count is required.",
+          "min": "Page Count must be at least {{min}}.",
+          "pattern": "Page Count must be a valid number."
+        }
+      }
+    },
+    "delete": {
+      "warning": "Are you sure you want to delete this book?",
+      "confirm": "Delete"
+    }
+  }
+}
