@@ -62,6 +62,34 @@ The BookStore assignment is a code challenge for job applicants where you will c
 
 ---
 
+## Troubleshooting
+
+## Installing @openapitools/openapi-generator-cli.
+
+Reason: for MacOS + Sequoia with ARM => sepcific java version 11 must be installed.
+Fix: followed docs -> https://openapi-generator.tech/docs/installation#jar
+
+For Mac users, please make sure Java 11 is installed (Tips: run java -version to check the version), and export JAVA_HOME in order to use the supported Java version:
+
+```
+export JAVA_HOME=`/usr/libexec/java_home -v 1.11`
+export PATH=${JAVA_HOME}/bin:$PATH
+```
+
+## running unit test
+
+Error: `Data path "/assets/0" must be string.`
+The error suggests that the Angular CLI (or the underlying tool chain) is expecting a string at index 0 of the assets array, but it found an object instead.
+Fix:
+
+```
+ "styles": [
+    "src/styles.scss"
+  ],
+```
+
+---
+
 ## What We’re Looking For
 
 - **Coding Standards**: Your code doesn’t have to be **perfect**, but we value **good structure**, **reusability**, and **clean code**.
