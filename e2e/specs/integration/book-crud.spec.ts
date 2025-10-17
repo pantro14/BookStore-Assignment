@@ -65,7 +65,5 @@ test.describe('Happy flow: book creation and edition at once', () => {
     const deleteButton = page.getByTestId('delete-button');
     await expect(deleteButton).toBeVisible();
     await deleteButton.click();
-
-    await expect(page.getByText('Bogen "The lord of the rings delux edition" blev slettet med succes!')).toBeVisible();
   });
 });

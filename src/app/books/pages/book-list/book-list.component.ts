@@ -1,5 +1,5 @@
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,6 +10,7 @@ import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/sl
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterModule } from '@angular/router';
+import { BookTableColumns } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 import { MatPaginatorIntlDa } from '@app/books/utils/mat-paginator-intl-da';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -41,25 +42,33 @@ export class BookListComponent {
   protected readonly router = inject(Router);
   protected readonly bookStore = inject(BookStore);
 
-  protected paginator = viewChild(MatPaginator);
-  protected sort = viewChild(MatSort);
+  protected readonly paginator = viewChild(MatPaginator);
+  protected readonly sort = viewChild(MatSort);
 
-  protected dataSource: MatTableDataSource<BookDTO> = new MatTableDataSource<BookDTO>([]);
+  protected readonly displayedColumns = signal<BookTableColumns[]>(['title', 'price', 'onSale', 'edit', 'delete']);
 
-  protected readonly displayedColumns = signal<string[]>(['title', 'price', 'onSale', 'edit', 'delete']);
-  protected readonly loading = computed(() => this.bookStore.loading());
+  protected readonly loading = computed<boolean>(() => this.bookStore.loading());
+  protected readonly dataSource = computed<MatTableDataSource<BookDTO>>(() => {
+    const paginator = this.paginator();
+    const sort = this.sort();
+    const bookList = this.bookStore.bookList();
+
+    let dataSource = new MatTableDataSource<BookDTO>([]);
+
+    if (paginator && sort) {
+      dataSource.paginator = paginator;
+      dataSource.sort = sort;
+    }
+
+    if (bookList.length > 0) {
+      dataSource.data = bookList;
+    }
+
+    return dataSource;
+  });
 
   constructor() {
     this.bookStore.loadBooks({ onSale: false });
-    effect(() => {
-      const paginator = this.paginator();
-      const sort = this.sort();
-      if (paginator && sort) {
-        this.dataSource = new MatTableDataSource<BookDTO>(this.bookStore.bookList());
-        this.dataSource.paginator = paginator;
-        this.dataSource.sort = sort;
-      }
-    });
   }
 
   createBook() {

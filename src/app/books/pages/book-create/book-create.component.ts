@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookFormComponent } from '@app/books/components/book-form/book-form.component';
 import { BookFormData } from '@app/books/interfaces';
@@ -9,11 +9,15 @@ import { BookStore } from '@app/books/stores/book-store';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookCreateComponent {
+export class BookCreateComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   protected readonly bookStore = inject(BookStore);
 
-  constructor() {
+  ngOnInit(): void {
+    this.openDialog();
+  }
+
+  openDialog(): void {
     const { componentInstance: bookFormComponetRef } = this.dialog.open<BookFormComponent>(BookFormComponent, {
       width: '450px',
       disableClose: true,

@@ -4,6 +4,8 @@ import { BookDTO } from '@openapi';
 export type BookFormData = Required<Omit<BookDTO, 'id' | 'lastUpdated' | 'lastUpdatedBy' | 'author'>>;
 export type BookDetails = BookFormData & Pick<BookDTO, 'author' | 'lastUpdatedBy'>;
 
+export type BookTableColumns = keyof Pick<BookDTO, 'title' | 'price' | 'onSale'> | 'edit' | 'delete';
+
 export type BookFormType = {
   [K in keyof BookFormData]: FormControl<BookFormData[K] | null>;
 };

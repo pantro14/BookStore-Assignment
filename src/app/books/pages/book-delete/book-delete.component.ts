@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookDeleteConfirmComponent } from '@app/books/components/book-delete-confirm/book-delete-confirm.component';
 import { BookFormData } from '@app/books/interfaces';
@@ -9,34 +9,32 @@ import { BookStore } from '@app/books/stores/book-store';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookDeleteComponent {
+export class BookDeleteComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   protected readonly bookStore = inject(BookStore);
 
   readonly bookId = input.required<string>();
 
-  constructor() {
-    effect(() => {
-      this.bookStore.setSelectedBook(this.bookId());
-    });
+  ngOnInit(): void {
+    this.bookStore.setSelectedBook(this.bookId());
+    this.openDialog(this.bookStore.selectedBook());
+  }
 
-    effect(() => {
-      const selectedBook = this.bookStore.selectedBook();
-      if (!selectedBook) {
-        this.bookStore.showBook404Error();
-      } else {
-        const { componentInstance: bookDeleteComponetRef } = this.dialog.open<BookDeleteConfirmComponent>(
-          BookDeleteConfirmComponent,
-          {
-            width: '450px',
-            disableClose: true,
-          }
-        );
-        bookDeleteComponetRef.bookDetails.set(selectedBook);
-        bookDeleteComponetRef.closeDelete.subscribe(() => this.onClose());
-        bookDeleteComponetRef.submitDelete.subscribe(() => this.onDelete(selectedBook));
-      }
-    });
+  openDialog(selectedBook: BookFormData | null): void {
+    if (!selectedBook) {
+      this.bookStore.showBook404Error();
+    } else {
+      const { componentInstance: bookDeleteComponetRef } = this.dialog.open<BookDeleteConfirmComponent>(
+        BookDeleteConfirmComponent,
+        {
+          width: '450px',
+          disableClose: true,
+        }
+      );
+      bookDeleteComponetRef.bookDetails.set(selectedBook);
+      bookDeleteComponetRef.closeDelete.subscribe(() => this.onClose());
+      bookDeleteComponetRef.submitDelete.subscribe(() => this.onDelete(selectedBook));
+    }
   }
 
   onDelete(selectedBook: BookFormData): void {

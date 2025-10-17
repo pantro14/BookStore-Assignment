@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BookDetailsComponent } from '@app/books/components/book-details/book-details.component';
+import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 
 @Component({
@@ -8,33 +9,31 @@ import { BookStore } from '@app/books/stores/book-store';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ViewBookComponent {
+export class ViewBookComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   protected readonly bookStore = inject(BookStore);
 
   readonly bookId = input.required<string>();
 
-  constructor() {
-    effect(() => {
-      this.bookStore.setSelectedBook(this.bookId());
-    });
+  ngOnInit(): void {
+    this.bookStore.setSelectedBook(this.bookId());
+    this.openDialog(this.bookStore.selectedBook());
+  }
 
-    effect(() => {
-      const selectedBook = this.bookStore.selectedBook();
-      if (!selectedBook) {
-        this.bookStore.showBook404Error();
-      } else {
-        const { componentInstance: bookDetailsComponetRef } = this.dialog.open<BookDetailsComponent>(
-          BookDetailsComponent,
-          {
-            width: '450px',
-            disableClose: true,
-          }
-        );
-        bookDetailsComponetRef.bookDetails.set(selectedBook);
-        bookDetailsComponetRef.closeDetails.subscribe(() => this.onClose());
-      }
-    });
+  openDialog(selectedBook: BookFormData | null): void {
+    if (!selectedBook) {
+      this.bookStore.showBook404Error();
+    } else {
+      const { componentInstance: bookDetailsComponetRef } = this.dialog.open<BookDetailsComponent>(
+        BookDetailsComponent,
+        {
+          width: '450px',
+          disableClose: true,
+        }
+      );
+      bookDetailsComponetRef.bookDetails.set(selectedBook);
+      bookDetailsComponetRef.closeDetails.subscribe(() => this.onClose());
+    }
   }
 
   onClose(): void {

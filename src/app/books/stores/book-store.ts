@@ -82,7 +82,7 @@ export const BookStore = signalStore(
           switchMap(({ onSale }) => {
             patchState(store, { loading: true });
             return bookstoreBffService.getBooks({ onSale }).pipe(
-              //delay(1000), added delay to simulate loading, this will break unit tests
+              //delay(2000), //added delay to simulate loading, this will break unit tests
               tap(books => {
                 patchState(store, removeAllEntities());
                 patchState(store, addEntities([...books]));
