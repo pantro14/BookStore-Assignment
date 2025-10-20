@@ -1,23 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BookFormComponent } from '@app/books/components/book-form/book-form.component';
 import { BookFormData } from '@app/books/interfaces';
-import { BookStore } from '@app/books/stores/book-store';
+import { BaseBookDialogComponent } from '@app/books/shared/base-book-dialog.component';
 
 @Component({
   selector: 'mxs-book-create',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookCreateComponent implements OnInit {
-  private readonly dialog = inject(MatDialog);
-  protected readonly bookStore = inject(BookStore);
-
+export class BookCreateComponent extends BaseBookDialogComponent implements OnInit {
   ngOnInit(): void {
     this.openDialog();
   }
 
-  openDialog(): void {
+  protected openDialog(): void {
     const { componentInstance: bookFormComponetRef } = this.dialog.open<BookFormComponent>(BookFormComponent, {
       width: '450px',
       disableClose: true,
@@ -32,13 +28,8 @@ export class BookCreateComponent implements OnInit {
     bookFormComponetRef.submitForm.subscribe(bookFormData => this.addBook(bookFormData));
   }
 
-  protected addBook(newBook: BookFormData): void {
+  private addBook(newBook: BookFormData): void {
     this.bookStore.addBook(newBook);
     this.goBack();
-  }
-
-  protected goBack(): void {
-    this.dialog.closeAll();
-    this.bookStore.nagivageToBookList();
   }
 }

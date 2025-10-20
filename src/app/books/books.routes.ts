@@ -11,7 +11,7 @@ export const booksRoutes: Routes = [
       },
       {
         path: 'view/:bookId',
-        loadComponent: () => import('./pages/view-book/view-book.component').then(m => m.ViewBookComponent),
+        loadComponent: () => import('./pages/book-view/book-view.component').then(m => m.BookViewComponent),
       },
       {
         path: 'edit/:bookId',

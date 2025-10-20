@@ -1,18 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { ChangeDetectionStrategy, Component, input, OnInit } from '@angular/core';
 import { BookDeleteConfirmComponent } from '@app/books/components/book-delete-confirm/book-delete-confirm.component';
 import { BookFormData } from '@app/books/interfaces';
-import { BookStore } from '@app/books/stores/book-store';
+import { BaseBookDialogComponent } from '@app/books/shared/base-book-dialog.component';
 
 @Component({
   selector: 'mxs-book-delete',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookDeleteComponent implements OnInit {
-  private readonly dialog = inject(MatDialog);
-  protected readonly bookStore = inject(BookStore);
-
+export class BookDeleteComponent extends BaseBookDialogComponent implements OnInit {
   readonly bookId = input.required<string>();
 
   ngOnInit(): void {
@@ -20,7 +16,7 @@ export class BookDeleteComponent implements OnInit {
     this.openDialog(this.bookStore.selectedBook());
   }
 
-  openDialog(selectedBook: BookFormData | null): void {
+  protected openDialog(selectedBook: BookFormData | null): void {
     if (!selectedBook) {
       this.bookStore.showBook404Error();
     } else {
@@ -32,18 +28,13 @@ export class BookDeleteComponent implements OnInit {
         }
       );
       bookDeleteComponetRef.bookDetails.set(selectedBook);
-      bookDeleteComponetRef.closeDelete.subscribe(() => this.onClose());
-      bookDeleteComponetRef.submitDelete.subscribe(() => this.onDelete(selectedBook));
+      bookDeleteComponetRef.closeDelete.subscribe(() => this.goBack());
+      bookDeleteComponetRef.submitDelete.subscribe(() => this.deleteBook(selectedBook));
     }
   }
 
-  onDelete(selectedBook: BookFormData): void {
+  private deleteBook(selectedBook: BookFormData): void {
     this.bookStore.deleteBook({ bookId: this.bookId(), bookTitle: selectedBook.title });
-    this.onClose();
-  }
-
-  onClose(): void {
-    this.dialog.closeAll();
-    this.bookStore.nagivageToBookList();
+    this.goBack();
   }
 }

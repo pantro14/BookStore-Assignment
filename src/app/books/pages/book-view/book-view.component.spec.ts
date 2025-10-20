@@ -5,10 +5,10 @@ import { BookFormData } from '@app/books/interfaces';
 import { BookStore } from '@app/books/stores/book-store';
 import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
 
-import { ViewBookComponent } from './view-book.component';
+import { BookViewComponent } from './book-view.component';
 
-describe('ViewBookComponent', () => {
-  let spectator: Spectator<ViewBookComponent>;
+describe('BookViewComponent', () => {
+  let spectator: Spectator<BookViewComponent>;
 
   const bookStore = {
     setSelectedBook: jest.fn(),
@@ -27,7 +27,7 @@ describe('ViewBookComponent', () => {
   const dialog = { open: jest.fn().mockImplementation(() => dialogOpen), closeAll: jest.fn() };
 
   const createComponent = createComponentFactory({
-    component: ViewBookComponent,
+    component: BookViewComponent,
     providers: [
       { provide: BookStore, useValue: bookStore },
       { provide: MatDialog, useValue: dialog },
@@ -44,7 +44,7 @@ describe('ViewBookComponent', () => {
     jest.clearAllMocks();
   });
 
-  describe('View book page', () => {
+  describe('Book view page', () => {
     describe('selectedBook is null', () => {
       it('should not show a dialog', () => {
         const matDialog = spectator.inject(MatDialog);

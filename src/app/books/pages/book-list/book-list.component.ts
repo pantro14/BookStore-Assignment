@@ -71,26 +71,26 @@ export class BookListComponent {
     this.bookStore.loadBooks({ onSale: false });
   }
 
-  createBook() {
+  protected createBook() {
     this.router.navigate(['/books/new']);
   }
 
-  onSaleToggle(event: MatSlideToggleChange) {
-    const isChecked = event.checked;
-    this.bookStore.loadBooks({ onSale: isChecked });
-  }
-
-  editBook(e: MouseEvent, bookId: string) {
+  protected editBook(e: MouseEvent, bookId: string) {
     e.stopPropagation();
     this.router.navigate([`/books/edit/${bookId}`]);
   }
 
-  deleteBook(e: MouseEvent, bookId: string) {
+  protected deleteBook(e: MouseEvent, bookId: string) {
     e.stopPropagation();
     this.router.navigate([`/books/delete/${bookId}`]);
   }
 
-  onViewDetails({ id: bookId }: BookDTO) {
+  protected viewDetails({ id: bookId }: BookDTO) {
     this.router.navigate([`/books/view/${bookId}`]);
+  }
+
+  protected toggleOnSaleBooks(event: MatSlideToggleChange) {
+    const isChecked = event.checked;
+    this.bookStore.loadBooks({ onSale: isChecked });
   }
 }

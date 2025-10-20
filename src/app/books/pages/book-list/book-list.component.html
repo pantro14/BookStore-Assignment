@@ -14,7 +14,7 @@
         {{ 'books.list.newBook' | translate }}
       </button>
       <p>
-        <mat-slide-toggle (change)="onSaleToggle($event)" data-testid="on-sale-book-toggle"
+        <mat-slide-toggle (change)="toggleOnSaleBooks($event)" data-testid="on-sale-book-toggle"
           >{{ 'books.global.onSale' | translate }}</mat-slide-toggle
         >
       </p>
@@ -61,8 +61,8 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
       <tr
         mat-row
-        (click)="onViewDetails(row)"
-        *matRowDef="let row; columns: displayedColumns()"
+        (click)="viewDetails(book)"
+        *matRowDef="let book; columns: displayedColumns()"
         data-testid="book-item"
       ></tr>
     </table>
